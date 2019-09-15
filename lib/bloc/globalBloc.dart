@@ -5,7 +5,7 @@ import 'package:blog_frontend/model/user.dart';
 import 'package:rxdart/rxdart.dart';
 
 class GlobalBloc extends BlocBase {
-  GlobalBloc() {}
+  GlobalBloc();
 
   final _userStream = BehaviorSubject<User>();
   Stream<User> get getUserStream => _userStream.stream;

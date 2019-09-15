@@ -1,5 +1,4 @@
 import 'package:blog_frontend/model/Serializable.dart';
-import 'package:flutter/material.dart';
 
 enum Status {
   Ok,
@@ -7,7 +6,7 @@ enum Status {
 }
 
 class Response <T extends Serializable> {
-  Response.fromJson(Map<String, dynamic> response, {@required this.typedBody})
+  Response.fromJson(Map<String, dynamic> response, {this.typedBody})
       : this.status = statusFromStr(response['status']),
         this.responseMessage = response['response_message'] ?? "",
         this.body = response['body'] {

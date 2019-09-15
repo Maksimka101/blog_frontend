@@ -10,8 +10,8 @@ class LoginBloc {
   StreamSink<LoginEvent> get authEvents => authBloc.authEvents;
 
   final _eventStream = PublishSubject<UiEventLogin>();
-  get uiEvents => _eventStream.stream;
-  get addUiEvents => _eventStream.sink;
+  Stream<UiEventLogin> get uiEvents => _eventStream.stream;
+  StreamSink<UiEventLogin> get addUiEvents => _eventStream.sink;
 
   dispose() {
     _eventStream.close();

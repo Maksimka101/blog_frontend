@@ -9,7 +9,6 @@ import 'package:blog_frontend/repository/cacheRepository.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/repository/firebaseRepository.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:uuid/uuid.dart';
 
 class AuthBloc extends BlocBase {
   AuthBloc() {

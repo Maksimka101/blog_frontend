@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/globalBloc.dart';
+import 'package:blog_frontend/bloc/startAppBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/repository/backendRepository.dart';
 import 'package:blog_frontend/repository/cacheRepository.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<UiEventLogin>(
-      stream: BlocProvider.getBloc<AuthBloc>().uiEvents,
+      stream: StartAppBloc(BlocProvider.getBloc<AuthBloc>()).uiEvents,
       builder: (context, userSnapshot) {
         if (!userSnapshot.hasData)
           return LoadScreen();

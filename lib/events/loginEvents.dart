@@ -25,8 +25,10 @@ class AuthenticateEvent extends LoginEvent {
   final String userPassword;
 }
 
-/// class for extends
+/// Don't user it! It is class for extends
 class UiEventLogin {}
+
+class UiEventNeedRegister extends UiEventLogin {}
 
 class UiEventRegister extends UiEventLogin {}
 
@@ -35,4 +37,4 @@ class UiEventAuthenticate extends UiEventLogin {}
 class UiEventUserAuthenticated extends UiEventLogin {}
 
 /// while user loading
-class UiEventLoadUser extends UiEventLogin {}
+class UiEventUserLoading extends UiEventLogin {}
