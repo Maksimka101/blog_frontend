@@ -25,6 +25,8 @@ class AuthenticateEvent extends LoginEvent {
   final String userPassword;
 }
 
+class SignInAnonymousEvent extends LoginEvent {}
+
 /// Don't user it! It is class for extends
 class UiEventLogin {}
 

@@ -30,7 +30,7 @@ class BackendRepository {
     final json = jsonEncode(user.toJson());
     final response = await http.post("$BACKEND_URL/blog/user/create",
         headers: {
-          'password': InternalRepositoryClient.instance.password,
+          'password': InternalRepositoryUser.instance.password,
         },
         body: json);
     final decodedResponse = jsonDecode(response.body);
@@ -88,7 +88,7 @@ class BackendRepository {
   static Future<Response> createPost(Post post) async {
     final jsonPost = jsonEncode(post.toJson());
     final request = await http.post('$BACKEND_URL/blog/create_post',
-        headers: {'password': InternalRepositoryClient.instance.password},
+        headers: {'password': InternalRepositoryUser.instance.password},
         body: jsonPost);
     final response = Response.fromJson(jsonDecode(request.body));
     return response;
@@ -97,7 +97,7 @@ class BackendRepository {
   static Future<Response> deletePost(String postId) async {
     final request = await http.delete(
         '$BACKEND_URL/blog/user/delete_post/$postId',
-        headers: {"password": InternalRepositoryClient.instance.password});
+        headers: {"password": InternalRepositoryUser.instance.password});
     final response =
         Response.fromJson(jsonDecode(request.body), typedBody: null);
     return response;
@@ -106,7 +106,7 @@ class BackendRepository {
   static Future<Response> createComment(Comment comment) async {
     final request = await http.post('$BACKEND_URL/blog/comment/create',
         headers: {
-          'password': InternalRepositoryClient.instance.password,
+          'password': InternalRepositoryUser.instance.password,
         },
         body: jsonEncode(comment.toJson()));
     final response =
@@ -117,7 +117,7 @@ class BackendRepository {
   static Future<Response> deleteComment(String commentId) async {
     final request = await http.post(
         '$BACKEND_URL/blog/comment/delete/$commentId',
-        headers: {'password': InternalRepositoryClient.instance.password});
+        headers: {'password': InternalRepositoryUser.instance.password});
     final response =
         Response.fromJson(jsonDecode(request.body), typedBody: null);
     return response;

@@ -12,15 +12,13 @@ import 'package:rxdart/rxdart.dart';
 
 class AuthBloc extends BlocBase {
   AuthBloc() {
-    globalBloc = BlocProvider.getBloc<GlobalBloc>();
-    var client = _internalRepository.client;
+    var client = _internalRepository.user;
     if (client.isRegistered)
       BackendRepository.getUser(client.name).then((userInResponse) =>
-          globalBloc.setUserStream.add(userInResponse.typedBody));
+          BlocProvider.getBloc<GlobalBloc>().setUserStream.add(userInResponse.typedBody));
     _authEventsStream.listen(_listenEvents);
   }
 
-  GlobalBloc globalBloc;
   final _internalRepository = InternalRepository();
 
   final _uiEventsStream = PublishSubject<UiEventLogin>();
@@ -45,7 +43,8 @@ class AuthBloc extends BlocBase {
   void _authenticateUserByPassword(AuthenticateEvent authEvent) {
     BackendRepository.getUser(authEvent.userName).then((response) {
       if (response.status == Status.Ok) {
-        _internalRepository.client = InternalRepositoryClient(
+        _internalRepository.user = InternalRepositoryUser(
+          isAnonymous: false,
             name: authEvent.userName, password: authEvent.userPassword);
         _uiEventsStream.add(UiEventUserAuthenticated());
       } else {
@@ -58,9 +57,10 @@ class AuthBloc extends BlocBase {
     final user = User(
         name: registerEvent.userName,
         imageUrl: FirebaseRepository.saveUserImage(registerEvent.userAvatar));
-    final cacheUser = InternalRepositoryClient(
+    final cacheUser = InternalRepositoryUser(
+      isAnonymous: false,
         password: registerEvent.userPassword, name: registerEvent.userName);
-    _internalRepository.client = cacheUser;
+    _internalRepository.user = cacheUser;
     BackendRepository.registerUser(user);
     _uiEventsStream.add(UiEventUserAuthenticated());
   }

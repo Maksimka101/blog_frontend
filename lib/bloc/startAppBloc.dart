@@ -1,12 +1,13 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/authBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:rxdart/rxdart.dart';
 
 class StartAppBloc {
-  StartAppBloc(this.authBloc) {
+  StartAppBloc() {
     authBloc.uiEvents.listen(_listenForUiEvents);
   }
-  final AuthBloc authBloc;
+  final AuthBloc authBloc = BlocProvider.getBloc<AuthBloc>();
   final _listenableEvents = [UiEventUserAuthenticated, UiEventNeedRegister];
   
   final _uiEvents = BehaviorSubject<UiEventLogin>();

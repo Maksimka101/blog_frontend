@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
-class InternalRepositoryClient {
-  InternalRepositoryClient({
+class InternalRepositoryUser {
+  InternalRepositoryUser({
     @required this.name,
     @required this.password,
+    @required this.isAnonymous
   }) {
-    if (name == null && password == null)
+    if (name == null && password == null && isAnonymous == null)
       isRegistered = false;
     else isRegistered = true;
-    InternalRepositoryClient.instance = this;
+    InternalRepositoryUser.instance = this;
   }
 
-  static InternalRepositoryClient instance;
+  static InternalRepositoryUser instance = InternalRepositoryUser(name: '', password: '', isAnonymous: true);
 
+  bool isAnonymous;
   bool isRegistered;
   String name;
   String password;
