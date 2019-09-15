@@ -1,9 +1,15 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
 class FirebaseRepository {
-  static saveUserImage() {
+  /// return image Url
+  static String saveUserImage(File image) {
     // todo
+    final storageReference = FirebaseStorage().ref().child('path');
   }
 
-  static loadUserImage() {
+  static File loadUserImage() {
     // todo
   }
 }

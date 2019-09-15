@@ -1,18 +1,21 @@
-import 'post.dart';
+import 'package:blog_frontend/model/Serializable.dart';
 
-class User {
+class User implements Serializable {
   User(
-      {this.uuid,
-      this.name,
-      this.imageUrl,
-      this.posts,
-      this.subscribes,
-      this.password}) {}
+      {this.name,
+      this.imageUrl});
 
-  String uuid;
+  void fromJson(dynamic json) {
+    name = json['name'];
+    imageUrl = json['image_url'];
+  }
   String name;
   String imageUrl;
-  List<User> subscribes;
-  List<Post> posts;
-  String password;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'image_url': imageUrl,
+    };
+  }
 }

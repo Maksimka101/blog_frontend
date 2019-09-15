@@ -1,10 +1,30 @@
-class Comment {
+import 'Serializable.dart';
 
-  Comment(this.authorId, this.authorName, this.content, this.authorImageUrl) {}
+class Comment implements Serializable {
+
+  Comment({this.authorId, this.content, this.authorImageUrl, this.postId});
 
   String authorId;
+  String postId;
   String content;
-  String authorName;
   String authorImageUrl;
+
+  @override
+  void fromJson(dynamic json) {
+    authorId = json['author'];
+    postId = json['post'];
+    content = json['content'];
+    authorImageUrl = json['author_image_url'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'author': authorId,
+      'post': postId,
+      'content': content,
+      'author_image_url': authorImageUrl,
+    };
+  }
 
 }

@@ -1,8 +1,12 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'bloc/AuthBloc.dart';
+import 'package:blog_frontend/bloc/globalBloc.dart';
+import 'package:blog_frontend/events/loginEvents.dart';
+import 'package:blog_frontend/repository/backendRepository.dart';
+import 'package:blog_frontend/repository/cacheRepository.dart';
+import 'package:blog_frontend/repository/entity/repositoryClient.dart';
+import 'bloc/authBloc.dart';
 import 'ui/screens/loadScreen.dart';
 import 'package:flutter/material.dart';
-import 'model/user.dart';
 import 'ui/screens/loginScreen.dart';
 import 'ui/screens/newsFeedScreen.dart';
 
@@ -12,8 +16,22 @@ class SetupBlocProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      child: TestApp(),
-      blocs: [Bloc((inject) => AuthBloc())],
+      child: MaterialApp(
+        home: TestApp(),
+        theme: ThemeData(
+          buttonColor: const Color.fromARGB(255, 120, 0, 80),
+          appBarTheme: AppBarTheme(
+            color: const Color.fromARGB(255, 120, 0, 80),
+          )
+        ),
+      ),
+      blocs: [
+        Bloc((inject) => AuthBloc()),
+        Bloc((inject) => GlobalBloc()),
+      ],
+      dependencies: [
+        Dependency((i) => InternalRepository()..loadClient()),
+      ],
     );
   }
 }
@@ -21,21 +39,20 @@ class SetupBlocProvider extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: StreamBuilder<User>(
-        stream: BlocProvider.getBloc<AuthBloc>().userStream,
-        builder: (context, userSnapshot) {
-          if (!userSnapshot.hasData) {
+    return StreamBuilder<UiEventLogin>(
+      stream: BlocProvider.getBloc<AuthBloc>().uiEvents,
+      builder: (context, userSnapshot) {
+        if (!userSnapshot.hasData)
+          return LoadScreen();
+        else {
+          if (userSnapshot.data.runtimeType == UiEventRegister)
+            return LoginScreen();
+          else if (userSnapshot.data.runtimeType == UiEventUserAuthenticated)
+            return NewsFeedScreen();
+          else
             return LoadScreen();
-          } else {
-            if (userSnapshot.data != null)
-              return LoginScreen();
-            else {
-              return NewsFeedScreen();
-            }
-          }
-        },
-      ),
+        }
+      },
     );
   }
 }
@@ -43,8 +60,11 @@ class MyApp extends StatelessWidget {
 class TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginScreen(),
-    );
+    InternalRepositoryClient.instance = InternalRepositoryClient(
+        name: '4d32d456-132d-4920-85e5-f83b05161737', password: 'Password');
+    BackendRepository.getUserByName('').then((v) {
+      for (final i in v.typedBody.list) print(i);
+    });
+    return LoadScreen();
   }
 }
