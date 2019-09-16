@@ -18,13 +18,11 @@ class AuthBloc extends BlocBase {
         if (!user.isAnonymous)
           BackendRepository.getUser(user.name).then((response) {
             if (response.status == Status.Ok) {
-              BlocProvider
-                  .getBloc<GlobalBloc>()
+              BlocProvider.getBloc<GlobalBloc>()
                   .setUserStream
                   .add(response.typedBody);
               _uiEventsStream.add(UiEventUserIsAuthenticated());
-            }
-            else
+            } else
               _uiEventsStream.add(UiEventAuthenticateError(
                   'Ошибка при загрузке данных с сервера, попробуйте '
                   'перезайти в аккаунт и проверьте подключение к интернету'));
@@ -43,6 +41,7 @@ class AuthBloc extends BlocBase {
   final _uiEventsStream = BehaviorSubject<UiEventLogin>();
 
   Stream<UiEventLogin> get uiEvents => _uiEventsStream.stream;
+
   StreamSink<UiEventLogin> get addUiEvents => _uiEventsStream.sink;
 
   final _authEventsStream = PublishSubject<LoginEvent>();
@@ -57,7 +56,19 @@ class AuthBloc extends BlocBase {
       case AuthenticateEvent:
         _authenticateUserByPassword(event as AuthenticateEvent);
         break;
+      case SignInAnonymousEvent:
+        _signInAnonymous();
+        break;
     }
+  }
+
+  void _signInAnonymous() {
+    _internalRepository.user = InternalRepositoryUser(
+      isAnonymous: true,
+      password: '',
+      name: '',
+    );
+    _uiEventsStream.add(UiEventUserIsAuthenticated());
   }
 
   void _authenticateUserByPassword(AuthenticateEvent authEvent) {
@@ -69,7 +80,9 @@ class AuthBloc extends BlocBase {
             password: authEvent.userPassword);
         _uiEventsStream.add(UiEventUserIsAuthenticated());
       } else {
-        // todo
+        _uiEventsStream.add(UiEventAuthenticateError(
+            'Ошибка на сервере. Возможно вы ввели не верные данные, '
+            'еще не зарегестрировались или у вас нет интернета.'));
       }
     });
   }

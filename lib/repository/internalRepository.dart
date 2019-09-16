@@ -9,8 +9,9 @@ class InternalRepository {
   final storage = FlutterSecureStorage();
 
   Future<void> loadClient() async {
+    final anon = await storage.read(key: 'anonymous');
     InternalRepositoryUser(
-        isAnonymous: await storage.read(key: 'anonymous') == null,
+        isAnonymous: anon == 'true',
         password: await storage.read(key: 'password'),
         name: await storage.read(key: 'uuid'));
   }
@@ -18,5 +19,6 @@ class InternalRepository {
   void _updateClient(InternalRepositoryUser repositoryUser) {
     storage.write(key: 'password', value: repositoryUser.password);
     storage.write(key: 'uuid', value: repositoryUser.name);
+    storage.write(key: 'anonymous', value: repositoryUser.isAnonymous.toString());
   }
 }

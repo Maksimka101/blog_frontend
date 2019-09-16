@@ -9,7 +9,7 @@ class LoginScreen extends StatelessWidget {
   final _form = GlobalKey<FormState>();
   final _loginScreenValidator = LoginScreenValidator();
 
-  // todo Сверстать
+  // todo добавить выбор фото
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -19,40 +19,78 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             children: <Widget>[
               CircleAvatar(
-                child: Text("Выберите фото"),
+                radius: 75,
+                child: Text("Выберите фото", style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic, fontWeight: FontWeight.w700),),
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Введите ваше имя",
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.blueGrey,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(9))
+                    ),
+                    hintText: "Введите ваше имя",
+                  ),
+                  validator: _loginScreenValidator.nameValidator,
                 ),
-                validator: _loginScreenValidator.nameValidator,
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Введите ваш пароль",
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blueGrey,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(9))
+                    ),
+                    hintText: "Введите ваш пароль",
+                  ),
+                  validator: _loginScreenValidator.firstPasswordValidator,
                 ),
-                validator: _loginScreenValidator.firstPasswordValidator,
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Подтвердите пароль",
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blueGrey,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(9))
+                    ),
+                    hintText: "Подтвердите пароль",
+                  ),
+                  validator: _loginScreenValidator.secondPasswordValidator,
                 ),
-                validator: _loginScreenValidator.secondPasswordValidator,
               ),
-              MaterialButton(
-                child: Text("Зарегистрироваться"),
-                onPressed: () {
-                  if (_form.currentState.validate()) {
-                    final userName = _loginScreenValidator.userName;
-                    final userPassword = _loginScreenValidator.userPassword;
-                    // todo: add user avatar
-                    loginBloc.authEvents.add(RegisterEvent(
-                          userName: userName,
-                          userPassword: userPassword,
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Text("Зарегистрироваться", style: TextStyle(color: Colors.white, fontSize: 19),),
+                  onPressed: () {
+                    if (_form.currentState.validate()) {
+                      final userName = _loginScreenValidator.userName;
+                      final userPassword = _loginScreenValidator.userPassword;
+                      // todo: add user avatar
+                      loginBloc.authEvents.add(RegisterEvent(
+                            userName: userName,
+                            userPassword: userPassword,
 //                    userAvatar: userAvatar
-                        ));
-                  }
-                },
+                          ));
+                    }
+                  },
+                ),
               )
             ],
           ),

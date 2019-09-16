@@ -4,43 +4,74 @@ import 'package:flutter/material.dart';
 
 class IntroductionLoginScreen extends StatelessWidget {
   IntroductionLoginScreen(this.loginBloc);
+
   final LoginBloc loginBloc;
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Card(
-        margin: EdgeInsets.all(10),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        elevation: 9,
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: MaterialButton(
-                  child: Text("Зарегистрироваться"),
-                  onPressed: () {
-                    loginBloc.addUiEvents.add(UiEventRegister());
-                  },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 13),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Text(
+                      "Зарегистрироваться",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () {
+                      loginBloc.addUiEvents.add(UiEventRegister());
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: MaterialButton(
-                  child: Text("Авторизироваться"),
-                  onPressed: () {
-                    loginBloc.addUiEvents.add(UiEventAuthenticate());
-                  },
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Text(
+                      "Авторизоваться",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () {
+                      loginBloc.addUiEvents.add(UiEventAuthenticate());
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: MaterialButton(
-                  child: Text("Пропустить"),
-                  onPressed: () {
-                    loginBloc.authEvents.add(SignInAnonymousEvent());
-                  },
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Text(
+                      "Пропустить",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () {
+                      loginBloc.authEvents.add(SignInAnonymousEvent());
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

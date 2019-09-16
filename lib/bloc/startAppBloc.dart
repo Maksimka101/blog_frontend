@@ -1,4 +1,3 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/authBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:rxdart/rxdart.dart';

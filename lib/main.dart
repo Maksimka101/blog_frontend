@@ -20,7 +20,9 @@ class SetupBlocProvider extends StatelessWidget {
       child: MaterialApp(
         home: MyApp(),
         theme: ThemeData(
-            buttonColor: const Color.fromARGB(255, 120, 0, 80),
+            primaryColorLight: const Color.fromARGB(255, 120, 0, 80),
+            primaryColorDark: const Color.fromARGB(255, 120, 0, 80),
+            buttonColor: Colors.pink[800],
             appBarTheme: AppBarTheme(
               color: const Color.fromARGB(255, 120, 0, 80),
             )),
