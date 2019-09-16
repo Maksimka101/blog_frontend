@@ -3,12 +3,12 @@ import 'package:blog_frontend/bloc/globalBloc.dart';
 import 'package:blog_frontend/bloc/startAppBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/repository/backendRepository.dart';
-import 'package:blog_frontend/repository/cacheRepository.dart';
+import 'package:blog_frontend/repository/internalRepository.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'bloc/authBloc.dart';
 import 'ui/screens/loadScreen.dart';
 import 'package:flutter/material.dart';
-import 'ui/screens/SignInScreen.dart';
+import 'ui/screens/signInScreen.dart';
 import 'ui/screens/newsFeedScreen.dart';
 
 main() => runApp(SetupBlocProvider());
@@ -42,15 +42,16 @@ class MyApp extends StatelessWidget {
     return Consumer<AuthBloc>(
       builder: (context, bloc) {
         return StreamBuilder<UiEventLogin>(
-          stream: bloc.uiEvents,
+          stream: StartAppBloc(bloc).uiEvents,
           builder: (context, userSnapshot) {
             if (!userSnapshot.hasData)
               return LoadScreen();
             else {
-              if (userSnapshot.data.runtimeType == UiEventRegister)
+              print(userSnapshot.data.runtimeType);
+              if (userSnapshot.data.runtimeType == UiEventNeedRegister)
                 return SignInScreen();
               else if (userSnapshot.data.runtimeType ==
-                  UiEventUserAuthenticated)
+                  UiEventUserIsAuthenticated)
                 return NewsFeedScreen();
               else
                 return LoadScreen();
@@ -65,13 +66,6 @@ class MyApp extends StatelessWidget {
 class TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    InternalRepositoryUser.instance = InternalRepositoryUser(
-        isAnonymous: true,
-        name: '4d32d456-132d-4920-85e5-f83b05161737',
-        password: 'Password');
-    BackendRepository.getUserByName('m').then((v) {
-      for (final i in v.typedBody.list) print(i);
-    });
     return LoadScreen();
   }
 }

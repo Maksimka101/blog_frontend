@@ -34,9 +34,19 @@ class UiEventNeedRegister extends UiEventLogin {}
 
 class UiEventRegister extends UiEventLogin {}
 
+class UiEventAuthenticateError extends UiEventLogin {
+  UiEventAuthenticateError(this.errorMessage);
+  final String errorMessage;
+}
+
+class UiEventLoginError extends UiEventLogin {
+  UiEventLoginError(this.errorMessage);
+  final String errorMessage;
+}
+
 class UiEventAuthenticate extends UiEventLogin {}
 
-class UiEventUserAuthenticated extends UiEventLogin {}
+class UiEventUserIsAuthenticated extends UiEventLogin {}
 
 /// while user loading
 class UiEventUserLoading extends UiEventLogin {}

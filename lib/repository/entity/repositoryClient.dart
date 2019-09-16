@@ -6,16 +6,16 @@ class InternalRepositoryUser {
     @required this.password,
     @required this.isAnonymous
   }) {
-    if (name == null && password == null && isAnonymous == null)
-      isRegistered = false;
-    else isRegistered = true;
+    if (name == null && password == null)
+      isNotFirstLogin = false;
+    else isNotFirstLogin = true;
     InternalRepositoryUser.instance = this;
   }
 
   static InternalRepositoryUser instance = InternalRepositoryUser(name: '', password: '', isAnonymous: true);
 
   bool isAnonymous;
-  bool isRegistered;
+  bool isNotFirstLogin;
   String name;
   String password;
 }

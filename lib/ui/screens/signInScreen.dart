@@ -20,18 +20,21 @@ class _SignInScreenState extends State<SignInScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 1);
     _loginBloc.uiEvents.listen(_uiEventListener);
     super.initState();
   }
 
   void _uiEventListener(UiEventLogin event) {
     switch (event.runtimeType) {
-      case UiEventRegister:
+      case UiEventAuthenticate:
         _tabController.animateTo(2);
         break;
       case UiEventRegister:
         _tabController.animateTo(0);
+        break;
+      case UiEventAuthenticateError:
+        _tabController.animateTo(2);
         break;
     }
   }
@@ -49,6 +52,7 @@ class _SignInScreenState extends State<SignInScreen>
             child: Text("Регистрация"),
           ),
           body: TabBarView(
+            controller: _tabController,
             children: <Widget>[
               LoginScreen(_loginBloc),
               IntroductionLoginScreen(_loginBloc),

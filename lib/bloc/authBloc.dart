@@ -5,25 +5,45 @@ import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/model/response.dart';
 import 'package:blog_frontend/model/user.dart';
 import 'package:blog_frontend/repository/backendRepository.dart';
-import 'package:blog_frontend/repository/cacheRepository.dart';
+import 'package:blog_frontend/repository/internalRepository.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/repository/firebaseRepository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthBloc extends BlocBase {
   AuthBloc() {
-    var client = _internalRepository.user;
-    if (client.isRegistered)
-      BackendRepository.getUser(client.name).then((userInResponse) =>
-          BlocProvider.getBloc<GlobalBloc>().setUserStream.add(userInResponse.typedBody));
+    _internalRepository.loadClient().then((_) {
+      var user = _internalRepository.user;
+      if (user.isNotFirstLogin) {
+        if (!user.isAnonymous)
+          BackendRepository.getUser(user.name).then((response) {
+            if (response.status == Status.Ok) {
+              BlocProvider
+                  .getBloc<GlobalBloc>()
+                  .setUserStream
+                  .add(response.typedBody);
+              _uiEventsStream.add(UiEventUserIsAuthenticated());
+            }
+            else
+              _uiEventsStream.add(UiEventAuthenticateError(
+                  'Ошибка при загрузке данных с сервера, попробуйте '
+                  'перезайти в аккаунт и проверьте подключение к интернету'));
+          });
+        else
+          _uiEventsStream.add(UiEventUserIsAuthenticated());
+      } else
+        _uiEventsStream.add(UiEventNeedRegister());
+    });
+
     _authEventsStream.listen(_listenEvents);
   }
 
   final _internalRepository = InternalRepository();
 
-  final _uiEventsStream = PublishSubject<UiEventLogin>();
+  final _uiEventsStream = BehaviorSubject<UiEventLogin>();
 
   Stream<UiEventLogin> get uiEvents => _uiEventsStream.stream;
+  StreamSink<UiEventLogin> get addUiEvents => _uiEventsStream.sink;
 
   final _authEventsStream = PublishSubject<LoginEvent>();
 
@@ -44,9 +64,10 @@ class AuthBloc extends BlocBase {
     BackendRepository.getUser(authEvent.userName).then((response) {
       if (response.status == Status.Ok) {
         _internalRepository.user = InternalRepositoryUser(
-          isAnonymous: false,
-            name: authEvent.userName, password: authEvent.userPassword);
-        _uiEventsStream.add(UiEventUserAuthenticated());
+            isAnonymous: false,
+            name: authEvent.userName,
+            password: authEvent.userPassword);
+        _uiEventsStream.add(UiEventUserIsAuthenticated());
       } else {
         // todo
       }
@@ -58,11 +79,12 @@ class AuthBloc extends BlocBase {
         name: registerEvent.userName,
         imageUrl: FirebaseRepository.saveUserImage(registerEvent.userAvatar));
     final cacheUser = InternalRepositoryUser(
-      isAnonymous: false,
-        password: registerEvent.userPassword, name: registerEvent.userName);
+        isAnonymous: false,
+        password: registerEvent.userPassword,
+        name: registerEvent.userName);
     _internalRepository.user = cacheUser;
     BackendRepository.registerUser(user);
-    _uiEventsStream.add(UiEventUserAuthenticated());
+    _uiEventsStream.add(UiEventUserIsAuthenticated());
   }
 
   @override
