@@ -38,10 +38,14 @@ class BackendRepository {
   }
 
   static Future<Response<User>> getUser(String uuid) async {
-    final backendResponse = await http.get("$BACKEND_URL/blog/user/$uuid}");
-    final decodedResponse = jsonDecode(backendResponse.body);
-    final response =
-        Response<User>.fromJson(decodedResponse, typedBody: User());
+    Response response;
+    try {
+      final backendResponse = await http.get("$BACKEND_URL/blog/user/get/$uuid");
+      final decodedResponse = jsonDecode(backendResponse.body);
+      response = Response<User>.fromJson(decodedResponse, typedBody: User());
+    } on FormatException catch (e) {
+      response = Response<User>(status: Status.Error);
+    }
     return response;
   }
 

@@ -5,7 +5,9 @@ enum Status {
   Error,
 }
 
-class Response <T extends Serializable> {
+class Response<T extends Serializable> {
+  Response({this.responseMessage, this.status, this.body, this.typedBody});
+
   Response.fromJson(Map<String, dynamic> response, {this.typedBody})
       : this.status = statusFromStr(response['status']),
         this.responseMessage = response['response_message'] ?? "",
