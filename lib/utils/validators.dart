@@ -14,7 +14,8 @@ class LoginScreenValidator {
   String firstPasswordValidator(String password) {
     if (password.length < 6) return "Слишком короткий пароль";
     if (password.length > 16) return "Слишком длинный пароль";
-    if (!password.contains("1234567890")) return "Слишком ненадежный пароль. Пароль должен содержать цифры";
+    if (!containsNum(password))
+      return "Слишком ненадежный пароль. Пароль должен содержать цифры";
     _firstPassword = password;
     return null;
   }
@@ -22,7 +23,8 @@ class LoginScreenValidator {
   String secondPasswordValidator(String password) {
     if (password.length < 6) return "Слишком короткий пароль";
     if (password.length > 16) return "Слишком длинный пароль";
-    if (!password.contains("1234567890")) return "Слишком ненадежный пароль. Пароль должен содержать цифры";
+    if (!containsNum(password))
+      return "Слишком ненадежный пароль. Пароль должен содержать цифры";
     if (password != _firstPassword) return "Пароли должны совподать";
     return null;
   }
@@ -43,8 +45,15 @@ class AuthScreenValidator {
   String passwordValidator(String password) {
     if (password.length < 6) return "Слишком короткий пароль";
     if (password.length > 16) return "Слишком длинный пароль";
-    if (!password.contains("1234567890")) return "Слишком ненадежный пароль. Пароль должен содержать цифры";
+    if (!containsNum(password))
+      return "Слишком ненадежный пароль. Пароль должен содержать цифры";
     userPassword = password;
     return null;
   }
+}
+
+bool containsNum(String str) {
+  for (final i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 0])
+    if (str.contains(i.toString())) return true;
+  return false;
 }
