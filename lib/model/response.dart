@@ -1,4 +1,4 @@
-import 'package:blog_frontend/model/Serializable.dart';
+import 'package:blog_frontend/model/serializable.dart';
 
 enum Status {
   Ok,

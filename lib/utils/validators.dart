@@ -1,5 +1,4 @@
 class LoginScreenValidator {
-
   String userName;
   String userPassword;
   String _firstPassword;
@@ -23,12 +22,12 @@ class LoginScreenValidator {
   String secondPasswordValidator(String password) {
     if (password.length < 6) return "Слишком короткий пароль";
     if (password.length > 16) return "Слишком длинный пароль";
+    if (password != _firstPassword) return "Пароли должны совподать";
     if (!containsNum(password))
       return "Слишком ненадежный пароль. Пароль должен содержать цифры";
-    if (password != _firstPassword) return "Пароли должны совподать";
+    userPassword = password;
     return null;
   }
-
 }
 
 class AuthScreenValidator {

@@ -1,4 +1,4 @@
-import 'package:blog_frontend/ui/widgets/OffsetAppbar.dart';
+import 'package:blog_frontend/ui/widgets/offsetAppbar.dart';
 import 'package:flutter/material.dart';
 
 class LoadScreen extends StatelessWidget {
@@ -6,12 +6,9 @@ class LoadScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: OffsetAppBar(
-        backgroundColor: AppBarTheme.of(context).color,
-        child: Text('Загрузка'),
+        title: Text('Загрузка'),
       ),
-      body: Center(
-        child: CircularProgressIndicator()
-      ),
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }

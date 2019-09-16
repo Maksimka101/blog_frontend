@@ -9,7 +9,7 @@ import 'bloc/authBloc.dart';
 import 'ui/screens/loadScreen.dart';
 import 'package:flutter/material.dart';
 import 'ui/screens/signInScreen.dart';
-import 'ui/screens/newsFeedScreen.dart';
+import 'ui/screens/mainAppScreen.dart';
 
 main() => runApp(SetupBlocProvider());
 
@@ -20,12 +20,15 @@ class SetupBlocProvider extends StatelessWidget {
       child: MaterialApp(
         home: MyApp(),
         theme: ThemeData(
-            primaryColorLight: const Color.fromARGB(255, 120, 0, 80),
-            primaryColorDark: const Color.fromARGB(255, 120, 0, 80),
-            buttonColor: Colors.pink[800],
+//            primaryColorLight: const Color.fromARGB(255, 120, 0, 80),
+            primaryColorLight: Colors.deepPurple,
+            primaryColorDark: Colors.deepPurple,
+//            buttonColor: Colors.pink[800],
+            buttonColor: Colors.deepPurple[400],
+            primaryColor: Colors.deepPurple,
             appBarTheme: AppBarTheme(
-              color: const Color.fromARGB(255, 120, 0, 80),
-            )),
+//              color: const Color.fromARGB(255, 120, 0, 80),
+                color: Colors.deepPurple)),
       ),
       blocs: [
         Bloc((inject) => AuthBloc()),
@@ -54,7 +57,7 @@ class MyApp extends StatelessWidget {
                 return SignInScreen();
               else if (userSnapshot.data.runtimeType ==
                   UiEventUserIsAuthenticated)
-                return NewsFeedScreen();
+                return MainAppScreen();
               else
                 return LoadScreen();
             }

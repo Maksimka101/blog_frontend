@@ -1,4 +1,4 @@
-import 'Serializable.dart';
+import 'serializable.dart';
 
 class Comment implements Serializable {
 

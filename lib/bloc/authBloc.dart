@@ -96,8 +96,13 @@ class AuthBloc extends BlocBase {
         password: registerEvent.userPassword,
         name: registerEvent.userName);
     _internalRepository.user = cacheUser;
-    BackendRepository.registerUser(user);
-    _uiEventsStream.add(UiEventUserIsAuthenticated());
+    BackendRepository.registerUser(user).then((resp) {
+      if (resp.status != Status.Ok)
+        _uiEventsStream.add(UiEventLoginError('Ошибка при регистрации. '
+            'Попробуйте выбрать другое имя или проверьте подключение к интернету.'));
+      else
+        _uiEventsStream.add(UiEventUserIsAuthenticated());
+    });
   }
 
   @override

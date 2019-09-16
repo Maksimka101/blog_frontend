@@ -2,7 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/authBloc.dart';
 import 'package:blog_frontend/bloc/loginBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
-import 'package:blog_frontend/ui/widgets/OffsetAppbar.dart';
+import 'package:blog_frontend/ui/widgets/offsetAppbar.dart';
 import 'package:blog_frontend/ui/screens/authorizationScreen.dart';
 import 'package:blog_frontend/ui/screens/introductionLoginScreen.dart';
 import 'package:blog_frontend/ui/screens/loginScreen.dart';
@@ -36,6 +36,9 @@ class _SignInScreenState extends State<SignInScreen>
       case UiEventAuthenticateError:
         _tabController.animateTo(2);
         break;
+      case UiEventLoginError:
+        _tabController.animateTo(0);
+        break;
     }
   }
 
@@ -48,8 +51,7 @@ class _SignInScreenState extends State<SignInScreen>
       },
       child: Scaffold(
           appBar: OffsetAppBar(
-            backgroundColor: AppBarTheme.of(context).color,
-            child: Text("Регистрация"),
+            title: Text("Регистрация"),
           ),
           body: TabBarView(
             controller: _tabController,

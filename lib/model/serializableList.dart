@@ -1,4 +1,4 @@
-import 'package:blog_frontend/model/Serializable.dart';
+import 'package:blog_frontend/model/serializable.dart';
 import 'package:flutter/material.dart';
 
 class SerializableList<T extends Serializable> implements Serializable{

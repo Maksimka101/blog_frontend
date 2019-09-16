@@ -26,15 +26,21 @@ class BackendRepository {
       '"4d32d456-132d-4920-85e5-f83b05161737", "posts": []}]}';
   static const String BACKEND_URL = "http://vlog-backend.appspot.com";
 
-  static Future<Response<User>> registerUser(User user) async {
+  static Future<Response> registerUser(User user) async {
     final json = jsonEncode(user.toJson());
-    final response = await http.post("$BACKEND_URL/blog/user/create",
-        headers: {
-          'password': InternalRepositoryUser.instance.password,
-        },
-        body: json);
-    final decodedResponse = jsonDecode(response.body);
-    return Response<User>.fromJson(decodedResponse);
+    Response response;
+    try {
+      final backendResponse = await http.post("$BACKEND_URL/blog/user/create",
+          headers: {
+            'password': InternalRepositoryUser.instance.password,
+          },
+          body: json);
+      final decodedResponse = jsonDecode(backendResponse.body);
+      response = Response.fromJson(decodedResponse);
+    } catch (e) {
+      response = Response(status: Status.Error);
+    }
+    return response;
   }
 
   static Future<Response<User>> getUser(String uuid) async {
@@ -43,7 +49,7 @@ class BackendRepository {
       final backendResponse = await http.get("$BACKEND_URL/blog/user/get/$uuid");
       final decodedResponse = jsonDecode(backendResponse.body);
       response = Response<User>.fromJson(decodedResponse, typedBody: User());
-    } on FormatException catch (e) {
+    } catch (e) {
       response = Response<User>(status: Status.Error);
     }
     return response;

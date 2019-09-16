@@ -1,5 +1,5 @@
-import 'package:blog_frontend/model/Serializable.dart';
-import 'package:blog_frontend/ui/entity/UiPostEntity.dart';
+import 'package:blog_frontend/model/serializable.dart';
+import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 
 class UiUserEntity implements Serializable {
   String name;
