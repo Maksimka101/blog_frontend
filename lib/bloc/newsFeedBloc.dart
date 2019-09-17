@@ -68,5 +68,6 @@ class NewsFeedBloc extends BlocBase {
   void dispose() {
     _postEvents.close();
     _uiPostEvent.close();
+    super.dispose();
   }
 }
