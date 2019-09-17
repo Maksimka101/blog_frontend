@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class NewsFeedScreen extends StatelessWidget {
   final _feedBloc = BlocProvider.getBloc<NewsFeedBloc>();
+  final _listViewController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,13 @@ class NewsFeedScreen extends StatelessWidget {
               Column(
                 children: <Widget>[
                   // user avatar and name card
-                  Card()
+                  Card(),
+                  ListView.builder(
+                    controller: _listViewController,
+                    itemBuilder: (context, i) {
+
+                    },
+                  )
                 ],
               ),
               // users for choose

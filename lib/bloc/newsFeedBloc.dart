@@ -13,8 +13,6 @@ class NewsFeedBloc extends BlocBase {
     _postEvents.stream.listen(_listenPostEvent);
   }
 
-  List<UserUiEntity> _previousPosts;
-
   void _listenPostEvent(PostEvent event) {
     switch (event.runtimeType) {
       case EventLoadPosts:
@@ -55,6 +53,10 @@ class NewsFeedBloc extends BlocBase {
       }
     });
   }
+
+  List<UserUiEntity> _previousPosts;
+
+
 
   final _postEvents = PublishSubject<PostEvent>();
 
