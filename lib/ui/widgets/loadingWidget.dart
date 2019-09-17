@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatelessWidget {
+class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Ностройки'),
+      child: CircularProgressIndicator(),
     );
   }
 }

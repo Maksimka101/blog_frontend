@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/globalBloc.dart';
+import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/bloc/startAppBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/repository/backendRepository.dart';
@@ -18,6 +19,7 @@ class SetupBlocProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: MyApp(),
         theme: ThemeData(
 //            primaryColorLight: const Color.fromARGB(255, 120, 0, 80),
@@ -33,6 +35,7 @@ class SetupBlocProvider extends StatelessWidget {
       blocs: [
         Bloc((inject) => AuthBloc()),
         Bloc((inject) => GlobalBloc()),
+        Bloc((inject) => NewsFeedBloc()),
       ],
       dependencies: [
         Dependency((i) => InternalRepository()),
@@ -52,7 +55,6 @@ class MyApp extends StatelessWidget {
             if (!userSnapshot.hasData)
               return LoadScreen();
             else {
-              print(userSnapshot.data.runtimeType);
               if (userSnapshot.data.runtimeType == UiEventNeedRegister)
                 return SignInScreen();
               else if (userSnapshot.data.runtimeType ==

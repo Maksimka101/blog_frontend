@@ -46,11 +46,31 @@ class BackendRepository {
   static Future<Response<User>> getUser(String uuid) async {
     Response response;
     try {
-      final backendResponse = await http.get("$BACKEND_URL/blog/user/get/$uuid");
+      final backendResponse =
+          await http.get("$BACKEND_URL/blog/user/get/$uuid");
       final decodedResponse = jsonDecode(backendResponse.body);
       response = Response<User>.fromJson(decodedResponse, typedBody: User());
     } catch (e) {
       response = Response<User>(status: Status.Error);
+    }
+    return response;
+  }
+
+  static Future<Response<SerializableList<UserUiEntity>>>
+      getAllUserSubscription(String userName) async {
+    Response<SerializableList<UserUiEntity>> response;
+    try {
+      final backendResponse = await http
+          .get('$BACKEND_URL/blog/user/get_all_subscriptions/$userName');
+      final decodedResponse = jsonDecode(backendResponse.body);
+      response = Response<SerializableList<UserUiEntity>>.fromJson(
+          decodedResponse,
+          typedBody: decodedResponse['body']
+              .map((_) => UserUiEntity())
+              .cast<UserUiEntity>()
+              .toList());
+    } catch (e) {
+      response = Response<SerializableList<UserUiEntity>>(status: Status.Error);
     }
     return response;
   }
@@ -81,15 +101,6 @@ class BackendRepository {
                 .map((_) => User())
                 .cast<User>()
                 .toList()));
-    return response;
-  }
-
-  static Future<Response<UiUserEntity>> getUserAndPosts(String uuid) async {
-    final request =
-        await http.get('$BACKEND_URL/blog/user/get_all_subscriptions');
-    final decodedResponse = jsonDecode(request.body);
-    final response = Response<UiUserEntity>.fromJson(decodedResponse,
-        typedBody: UiUserEntity());
     return response;
   }
 

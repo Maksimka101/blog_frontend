@@ -1,7 +1,7 @@
 import 'package:blog_frontend/model/serializable.dart';
 import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 
-class UiUserEntity implements Serializable {
+class UserUiEntity implements Serializable {
   String name;
   String imageUrl;
   final posts = <UiPostEntity>[];

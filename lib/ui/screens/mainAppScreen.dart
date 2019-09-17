@@ -24,7 +24,7 @@ class _MainAppScreenState extends State<MainAppScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: OffsetAppBar(
-        title: Text('Posts'),
+        title: Text('Блог'),
       ),
       body: TabBarView(
         controller: _tabController,
@@ -35,15 +35,26 @@ class _MainAppScreenState extends State<MainAppScreen>
           SettingsScreen()
         ],
       ),
-      bottomNavigationBar: OffsetTabBar(
-        backgroundColor: AppBarTheme.of(context).color,
+      bottomNavigationBar: OffsetNavigationBar(
         controller: _tabController,
-        tabs: <Widget>[
-          Tab(icon: Icon(Icons.list),),
-          Tab(icon: Icon(Icons.list),),
-          Tab(icon: Icon(Icons.list),),
-          Tab(icon: Icon(Icons.list),),
-        ],
+        tabs: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment),
+              title: Text('Новости')
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.assignment_ind),
+              title: Text('Мои посты')
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.group_add),
+              title: Text('Найти друга')
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              title: Text('Настройки')
+          ),
+        ]
       ),
     );
   }
