@@ -28,9 +28,9 @@ class NewsFeedBloc extends BlocBase {
 
   void _filterUsers(EventFilterUsers event) {
     if (event.showAllUsers)
-      _uiPostEvent.add(UiEventPosts(usersAndPosts: _previousPosts));
+      _uiDataPostEvent.add(UiEventPosts(usersAndPosts: _previousPosts));
     else {
-      _uiPostEvent.add(UiEventPosts(usersAndPosts: <UserUiEntity>[
+      _uiDataPostEvent.add(UiEventPosts(usersAndPosts: <UserUiEntity>[
         _previousPosts.where((user) => user.name == event.userName).first
       ]));
     }
@@ -39,19 +39,13 @@ class NewsFeedBloc extends BlocBase {
   void _loadUserSubscriptions(String userName) {
     BackendRepository.getAllUserSubscription(userName).then((usersResponse) {
       if (usersResponse.status == Status.Ok) {
-        _uiPostEvent
+        _uiDataPostEvent
             .add(UiEventPosts(usersAndPosts: usersResponse.typedBody.list));
         _previousPosts = usersResponse.typedBody.list;
       } else {
-        if (_previousPosts != null)
-          _uiPostEvent.add(UiEventErrorAndPreviousPosts(
-              usersAndPosts: _previousPosts,
-              message: 'Ошибка при загрузки с сервера. Проверьте подключение '
-                  'к интернету или попробуйте перезайти.'));
-        else
-          _uiPostEvent.add(UiEventError(
-              message: 'Ошибка при загрузки с сервера. Проверьте подключение '
-                  'к интернету или попробуйте перезайти.'));
+        _uiPostEvent.add(UiEventError(
+            message: 'Ошибка при загрузки с сервера. Проверьте подключение '
+                'к интернету или попробуйте перезайти.'));
       }
     });
   }
@@ -62,12 +56,17 @@ class NewsFeedBloc extends BlocBase {
   StreamSink<PostEvent> get addPostEvent => _postEvents.sink;
 
   final _uiPostEvent = PublishSubject<UiPostEvent>();
-
+  
   Stream<UiPostEvent> get uiPostEvent => _uiPostEvent.stream;
+  StreamSink<UiPostEvent> get addUiPostEvent => _uiPostEvent.sink;
+
+  final _uiDataPostEvent = PublishSubject<UiDataPostEvent>();
+
+  Stream<UiDataPostEvent> get uiDataPostEvent => _uiDataPostEvent.stream;
 
   void dispose() {
     _postEvents.close();
-    _uiPostEvent.close();
+    _uiDataPostEvent.close();
     super.dispose();
   }
 }

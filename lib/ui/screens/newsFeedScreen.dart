@@ -9,16 +9,24 @@ class NewsFeedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<UiPostEvent>(
-      stream: _feedBloc.uiPostEvent,
+    return StreamBuilder<UiDataPostEvent>(
+      stream: _feedBloc.uiDataPostEvent,
       builder: (context, postsSnapshot) {
         if (postsSnapshot.hasData) {
+          final posts = (postsSnapshot.data as UiEventPosts).usersAndPosts;
           return Stack(
             children: <Widget>[
               Column(
                 children: <Widget>[
                   // user avatar and name card
-                  Card()
+                  Card(),
+                  PageView.builder(
+                    itemCount: posts.length,
+                    itemBuilder: (context, i) {
+                      // todo
+                      return Container();
+                    },
+                  )
                 ],
               ),
               // users for choose

@@ -17,20 +17,18 @@ class EventFilterUsers extends PostEvent {
 class EventCommentPost extends PostEvent {}
 
 
-class UiPostEvent {}
+class UiDataPostEvent {}
 
-class UiEventPosts extends UiPostEvent {
+class UiEventPosts extends UiDataPostEvent {
   UiEventPosts({this.usersAndPosts});
   final List<UserUiEntity> usersAndPosts;
 }
+
+
+class UiPostEvent {}
 
 class UiEventError extends UiPostEvent {
   UiEventError({this.message});
   final String message;
 }
 
-class UiEventErrorAndPreviousPosts extends UiPostEvent {
-  UiEventErrorAndPreviousPosts({this.message, this.usersAndPosts});
-  final String message;
-  final List<UserUiEntity> usersAndPosts;
-}
