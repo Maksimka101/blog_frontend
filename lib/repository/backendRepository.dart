@@ -63,12 +63,13 @@ class BackendRepository {
       final backendResponse = await http
           .get('$BACKEND_URL/blog/user/get_all_subscriptions/$userName');
       final decodedResponse = jsonDecode(backendResponse.body);
+      final listForDecode = decodedResponse['body']
+          .map((_) => UserUiEntity())
+          .cast<UserUiEntity>()
+          .toList();
       response = Response<SerializableList<UserUiEntity>>.fromJson(
           decodedResponse,
-          typedBody: decodedResponse['body']
-              .map((_) => UserUiEntity())
-              .cast<UserUiEntity>()
-              .toList());
+          typedBody: SerializableList<UserUiEntity>(list: listForDecode));
     } catch (e) {
       response = Response<SerializableList<UserUiEntity>>(status: Status.Error);
     }

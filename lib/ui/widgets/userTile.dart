@@ -1,12 +1,9 @@
+import 'package:blog_frontend/utils/stringUtil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class UserTile extends StatelessWidget {
-  UserTile(
-      {@required this.userName,
-      @required this.imageUrl,
-      this.button,
-      this.onClick});
+  UserTile({this.userName = '', this.imageUrl, this.button, this.onClick});
 
   final String imageUrl;
   final String userName;
@@ -16,20 +13,28 @@ class UserTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: InkWell(
         onTap: onClick ?? () {},
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            CircleAvatar(
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Text(userName),
+            if (imageUrl != null)
+              CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(imageUrl)),
+            if (imageUrl == null)
+              CircleAvatar(
+                  backgroundColor: Colors.deepPurple,
+                  child: Text(
+                    userName[0].toUpperCase(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                  )),
+            SizedBox(width: 20),
+            Text(startToUpper(userName),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
             if (button != null) button,
           ],
         ),

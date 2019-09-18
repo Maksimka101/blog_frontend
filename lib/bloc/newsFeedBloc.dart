@@ -50,7 +50,9 @@ class NewsFeedBloc extends BlocBase {
 
   List<UserUiEntity> _previousPosts;
 
-
+  final _scrollPositionScream = PublishSubject<double>();
+  Stream<double> get scrollPosition => _scrollPositionScream.stream;
+  StreamSink<double> get updateScrollPosition => _scrollPositionScream.sink;
 
   final _postEvents = PublishSubject<PostEvent>();
 
@@ -58,7 +60,7 @@ class NewsFeedBloc extends BlocBase {
   StreamSink<PostEvent> get addPostEvent => _postEvents.sink;
 
   final _uiPostEvent = PublishSubject<UiPostEvent>();
-  
+
   Stream<UiPostEvent> get uiPostEvent => _uiPostEvent.stream;
   StreamSink<UiPostEvent> get addUiPostEvent => _uiPostEvent.sink;
 
@@ -69,6 +71,7 @@ class NewsFeedBloc extends BlocBase {
   void dispose() {
     _postEvents.close();
     _uiDataPostEvent.close();
+    _scrollPositionScream.close();
     super.dispose();
   }
 }

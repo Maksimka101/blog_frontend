@@ -15,7 +15,9 @@ class Post implements Serializable {
     title = json['title'];
     content = json['content'];
     imageUrl = json['image_url'];
-    createDate = DateTime.parse(json['crate_date']);
+    final List<String> date = json['create_date'].split('-');
+    createDate = DateTime.utc(
+        int.parse(date[0]), int.parse(date[1]), int.parse(date[2]));
   }
 
   int id;

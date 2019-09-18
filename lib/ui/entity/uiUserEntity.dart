@@ -4,7 +4,7 @@ import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 class UserUiEntity implements Serializable {
   String name;
   String imageUrl;
-  final posts = <UiPostEntity>[];
+  final List<UiPostEntity> posts = [];
 
   @override
   void fromJson(json) {
