@@ -88,14 +88,14 @@ class AuthBloc extends BlocBase {
   }
 
   void _registerWithPassword(RegisterEvent registerEvent) {
-    final user = User(
-        name: registerEvent.userName,
-        imageUrl: FirebaseRepository.saveUserImage(registerEvent.userAvatar));
     final cacheUser = InternalRepositoryUser(
         isAnonymous: false,
         password: registerEvent.userPassword,
         name: registerEvent.userName);
     _internalRepository.user = cacheUser;
+    final user = User(
+        name: registerEvent.userName,
+        imageUrl: FirebaseRepository.saveUserImage(registerEvent.userAvatar));
     BackendRepository.registerUser(user).then((resp) {
       if (resp.status != Status.Ok)
         _uiEventsStream.add(UiEventLoginError('Ошибка при регистрации. '

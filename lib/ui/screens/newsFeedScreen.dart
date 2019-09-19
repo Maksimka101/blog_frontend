@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
+import 'package:blog_frontend/model/user.dart';
 import 'package:blog_frontend/ui/widgets/expandedUserCard.dart';
 import 'package:blog_frontend/ui/widgets/loadingWidget.dart';
 import 'package:blog_frontend/ui/widgets/roundedCard.dart';
@@ -44,11 +45,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   // user avatar and name card
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ExpandedUserCard(
-                    )
-                  ),
+                  SizedBox(height: 80,),
                   SizedBox(
                     height: 100,
                     child: PageView.builder(
@@ -64,8 +61,17 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                   )
                 ],
               ),
-              // users for choose
-              Card()
+              SingleChildScrollView(
+                child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 35),
+                      child: ExpandedUserCard(
+                        newsBloc: _feedBloc,
+                        users: posts,
+                      ),
+                    )),
+              ),
             ],
           );
         } else

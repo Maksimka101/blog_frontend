@@ -13,9 +13,9 @@ class User implements Serializable {
   String imageUrl;
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'image_url': imageUrl,
-    };
+    final json = <String, dynamic>{};
+    json['name'] = name;
+    if (imageUrl != null) json['image_url'] = imageUrl;
+    return json;
   }
 }

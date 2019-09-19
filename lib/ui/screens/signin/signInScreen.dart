@@ -3,9 +3,9 @@ import 'package:blog_frontend/bloc/authBloc.dart';
 import 'package:blog_frontend/bloc/loginBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/ui/widgets/offsetAppbar.dart';
-import 'package:blog_frontend/ui/screens/authorizationScreen.dart';
+import 'package:blog_frontend/ui/screens/signin/authorizationScreen.dart';
 import 'package:blog_frontend/ui/screens/introductionLoginScreen.dart';
-import 'package:blog_frontend/ui/screens/loginScreen.dart';
+import 'package:blog_frontend/ui/screens/signin/loginScreen.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {

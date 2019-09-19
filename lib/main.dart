@@ -7,7 +7,7 @@ import 'package:blog_frontend/repository/internalRepository.dart';
 import 'bloc/authBloc.dart';
 import 'ui/screens/loadScreen.dart';
 import 'package:flutter/material.dart';
-import 'ui/screens/signInScreen.dart';
+import 'ui/screens/signin/signInScreen.dart';
 import 'ui/screens/mainAppScreen.dart';
 
 main() => runApp(SetupBlocProvider());

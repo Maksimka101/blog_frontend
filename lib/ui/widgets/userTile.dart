@@ -17,7 +17,6 @@ class UserTile extends StatelessWidget {
       child: InkWell(
         onTap: onClick ?? () {},
         child: Row(
-          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             if (imageUrl != null)
               CircleAvatar(
@@ -26,15 +25,20 @@ class UserTile extends StatelessWidget {
               CircleAvatar(
                   backgroundColor: Colors.deepPurple,
                   child: Text(
-                    userName[0].toUpperCase(),
+                    userName.length > 0 ? userName[0].toUpperCase() : '',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                         fontWeight: FontWeight.w500),
                   )),
             SizedBox(width: 20),
-            Text(startToUpper(userName),
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
+            Flexible(
+              child: Text(
+                startToUpper(userName),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             if (button != null) button,
           ],
         ),

@@ -30,6 +30,7 @@ class BackendRepository {
     final json = jsonEncode(user.toJson());
     Response response;
     try {
+      print(json);
       final backendResponse = await http.post("$BACKEND_URL/blog/user/create",
           headers: {
             'password': InternalRepositoryUser.instance.password,
