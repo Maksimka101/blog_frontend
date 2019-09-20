@@ -47,6 +47,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                   itemCount: posts.length,
                   itemBuilder: (context, i) {
                     return Stack(
+                      alignment: Alignment.topCenter,
                       children: <Widget>[
                         Column(
                           children: <Widget>[
@@ -60,18 +61,14 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                             ),
                           ],
                         ),
-                        SingleChildScrollView(
-                          child: Align(
-                              alignment: Alignment.topCenter,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: MediaQuery.of(context).size.width*0.1),
-                                child: ExpandedUserCard(
-                                  currentUserIndex: i,
-                                  newsBloc: _feedBloc,
-                                  users: posts,
-                                ),
-                              )),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, ),
+                          child: ExpandedUserCard(
+                            currentUserIndex: i,
+                            newsBloc: _feedBloc,
+                            users: posts,
+                          ),
                         ),
                       ],
                     );
