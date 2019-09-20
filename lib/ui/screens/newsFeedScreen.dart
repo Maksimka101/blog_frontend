@@ -1,13 +1,10 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
-import 'package:blog_frontend/model/user.dart';
-import 'package:blog_frontend/ui/widgets/expandedUserCard.dart';
-import 'package:blog_frontend/ui/widgets/loadingWidget.dart';
-import 'package:blog_frontend/ui/widgets/roundedCard.dart';
-import 'package:blog_frontend/ui/widgets/userTile.dart';
+import 'package:blog_frontend/model/contants.dart';
+import 'package:blog_frontend/ui/widgets/newsScreen/expandedUserCard.dart';
+import 'package:blog_frontend/ui/widgets/common/loadingWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class NewsFeedScreen extends StatefulWidget {
   @override
@@ -38,40 +35,49 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
       builder: (context, postsSnapshot) {
         if (postsSnapshot.hasData) {
           final posts = (postsSnapshot.data as UiEventPosts).usersAndPosts;
-          posts.add(posts.first);
-          return Stack(
+          final pl = posts.length;
+          for (int i = 0; i < pl; i++) posts.add(posts[i]);
+          return Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  // user avatar and name card
-                  SizedBox(height: 80,),
-                  SizedBox(
-                    height: 100,
-                    child: PageView.builder(
-                      controller: _pageViewController,
-                      itemCount: posts.length,
-                      itemBuilder: (context, i) {
-                        // todo
-                        return Container(
-                          color: Colors.deepPurple,
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-              SingleChildScrollView(
-                child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 35),
-                      child: ExpandedUserCard(
-                        newsBloc: _feedBloc,
-                        users: posts,
-                      ),
-                    )),
-              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height-toolAndAppBarHeight,
+                child: PageView.builder(
+                  controller: _pageViewController,
+                  itemCount: posts.length,
+                  itemBuilder: (context, i) {
+                    return Stack(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 80,
+                            ),
+                            Expanded(
+                              child: Container(
+                                color: Colors.deepPurple,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SingleChildScrollView(
+                          child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: MediaQuery.of(context).size.width*0.1),
+                                child: ExpandedUserCard(
+                                  currentUserIndex: i,
+                                  newsBloc: _feedBloc,
+                                  users: posts,
+                                ),
+                              )),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              )
             ],
           );
         } else

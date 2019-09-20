@@ -44,7 +44,7 @@ class OffsetAppBar extends StatelessWidget implements PreferredSize {
       );
 
   @override
-  Size get preferredSize => AppBar().preferredSize;
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   ///
   /// AppBar, который смещен на Offset.

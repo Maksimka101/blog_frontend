@@ -1,4 +1,4 @@
-import 'package:blog_frontend/ui/widgets/offsetAppbar.dart';
+import 'package:blog_frontend/ui/widgets/common/offsetAppbar.dart';
 import 'package:flutter/material.dart';
 
 class LoadScreen extends StatelessWidget {

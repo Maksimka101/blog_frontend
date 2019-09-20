@@ -2,8 +2,8 @@ import 'package:blog_frontend/ui/screens/findUserScreen.dart';
 import 'package:blog_frontend/ui/screens/newsFeedScreen.dart';
 import 'package:blog_frontend/ui/screens/settingsScreen.dart';
 import 'package:blog_frontend/ui/screens/userPostsScreen.dart';
-import 'package:blog_frontend/ui/widgets/offsetAppbar.dart';
-import 'package:blog_frontend/ui/widgets/offsetTabBar.dart';
+import 'package:blog_frontend/ui/widgets/common/offsetAppbar.dart';
+import 'package:blog_frontend/ui/widgets/common/offsetTabBar.dart';
 import 'package:flutter/material.dart';
 
 class MainAppScreen extends StatefulWidget {

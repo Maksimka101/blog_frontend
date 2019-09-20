@@ -1,18 +1,21 @@
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
-import 'package:blog_frontend/ui/widgets/roundedCard.dart';
-import 'package:blog_frontend/ui/widgets/userTile.dart';
+import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
+import 'package:blog_frontend/ui/widgets/common/userTile.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedUserCard extends StatefulWidget {
   ExpandedUserCard(
       {@required this.users,
       @required this.newsBloc,
-      this.duration = const Duration(milliseconds: 350)});
+        @required this.currentUserIndex,
+      this.expandDuration = const Duration(milliseconds: 350)});
+
   final List<UserUiEntity> users;
+  final int currentUserIndex;
   final NewsFeedBloc newsBloc;
-  final Duration duration;
+  final Duration expandDuration;
 
   @override
   _ExpandedUserCardState createState() => _ExpandedUserCardState();
@@ -25,19 +28,18 @@ class _ExpandedUserCardState extends State<ExpandedUserCard>
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
-      reverseDuration: widget.duration,
+      reverseDuration: widget.expandDuration,
       alignment: Alignment.topCenter,
-      duration: widget.duration,
+      duration: widget.expandDuration,
       vsync: this,
       child: RoundedCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            // Todo
             UserTile(
-              userName: widget.users[0].name,
-              imageUrl: widget.users[0].imageUrl,
+              userName: widget.users[widget.currentUserIndex].name,
+              imageUrl: widget.users[widget.currentUserIndex].imageUrl,
               onClick: () => setState(() => _isExpanded = !_isExpanded),
             ),
             if (_isExpanded)
