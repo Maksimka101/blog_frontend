@@ -2,6 +2,8 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/contants.dart';
+import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
+import 'package:blog_frontend/ui/widgets/common/newsCard.dart';
 import 'package:blog_frontend/ui/widgets/newsScreen/expandedUserCard.dart';
 import 'package:blog_frontend/ui/widgets/common/loadingWidget.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +36,11 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
       stream: _feedBloc.uiDataPostEvent,
       builder: (context, postsSnapshot) {
         if (postsSnapshot.hasData) {
-          final posts = (postsSnapshot.data as UiEventPosts).usersAndPosts;
-          final pl = posts.length;
-          for (int i = 0; i < pl; i++) posts.add(posts[i]);
+          final users = (postsSnapshot.data as UiEventPosts).usersAndPosts;
+          final pl = users.length;
+          for (int i = 0; i < pl; i++) users.add(users[i]);
+          final posts = <UiPostEntity>[];
+          users.forEach((user) => user.posts.forEach((post) => posts.add(post)));
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -51,13 +55,10 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                            SizedBox(
-                              height: 80,
-                            ),
-                            Expanded(
-                              child: Container(
-                                color: Colors.deepPurple,
-                              ),
+                            SizedBox(height: 75,),
+                            NewsCard(
+                              scrollPosition: _feedBloc.scrollPosition,
+                              post: posts[i],
                             ),
                           ],
                         ),
@@ -67,7 +68,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                           child: ExpandedUserCard(
                             currentUserIndex: i,
                             newsBloc: _feedBloc,
-                            users: posts,
+                            users: users,
                           ),
                         ),
                       ],
