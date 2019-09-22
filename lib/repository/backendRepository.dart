@@ -6,7 +6,7 @@ import 'package:blog_frontend/model/serializableList.dart';
 import 'package:blog_frontend/model/user.dart';
 import 'package:blog_frontend/model/response.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
-import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
+import 'package:blog_frontend/repository/entity/repositoryUserEntity.dart';
 import 'package:http/http.dart' as http;
 
 class BackendRepository {
@@ -57,22 +57,22 @@ class BackendRepository {
     return response;
   }
 
-  static Future<Response<SerializableList<UserUiEntity>>>
+  static Future<Response<SerializableList<RepositoryUserEntity>>>
       getAllUserSubscription(String userName) async {
-    Response<SerializableList<UserUiEntity>> response;
+    Response<SerializableList<RepositoryUserEntity>> response;
     try {
       final backendResponse = await http
           .get('$BACKEND_URL/blog/user/get_all_subscriptions/$userName');
       final decodedResponse = jsonDecode(backendResponse.body);
       final listForDecode = decodedResponse['body']
-          .map((_) => UserUiEntity())
-          .cast<UserUiEntity>()
+          .map((_) => RepositoryUserEntity())
+          .cast<RepositoryUserEntity>()
           .toList();
-      response = Response<SerializableList<UserUiEntity>>.fromJson(
+      response = Response<SerializableList<RepositoryUserEntity>>.fromJson(
           decodedResponse,
-          typedBody: SerializableList<UserUiEntity>(list: listForDecode));
+          typedBody: SerializableList<RepositoryUserEntity>(list: listForDecode));
     } catch (e) {
-      response = Response<SerializableList<UserUiEntity>>(status: Status.Error);
+      response = Response<SerializableList<RepositoryUserEntity>>(status: Status.Error);
     }
     return response;
   }

@@ -1,22 +1,9 @@
-import 'package:blog_frontend/model/serializable.dart';
 import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 
-class UserUiEntity implements Serializable {
-  String name;
-  String imageUrl;
-  final List<UiPostEntity> posts = [];
+class UiUserEntity {
+  UiUserEntity({this.post, this.userName, this.userImageUrl});
 
-  @override
-  void fromJson(json) {
-    name = json['name'];
-    imageUrl = json['image_url'];
-    for (final post in json['posts']) {
-      posts.add(UiPostEntity()..fromJson(post));
-    }
-  }
-
-  @override
-  toJson() {
-    return null;
-  }
+  final String userName;
+  final String userImageUrl;
+  final UiPostEntity post;
 }

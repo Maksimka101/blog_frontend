@@ -13,7 +13,7 @@ class ExpandedUserCard extends StatefulWidget {
       @required this.currentUserIndex,
       this.expandDuration = const Duration(milliseconds: 350)});
 
-  final List<UserUiEntity> users;
+  final List<UiUserEntity> users;
   final int currentUserIndex;
   final NewsFeedBloc newsBloc;
   final Duration expandDuration;
@@ -66,8 +66,8 @@ class _ExpandedUserCardState extends State<ExpandedUserCard>
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   UserTile(
-                    userName: widget.users[widget.currentUserIndex].name,
-                    imageUrl: widget.users[widget.currentUserIndex].imageUrl,
+                    userName: widget.users[widget.currentUserIndex].userName,
+                    imageUrl: widget.users[widget.currentUserIndex].userImageUrl,
                     onClick: () => setState(() => _isExpanded = !_isExpanded),
                   ),
                   if (_isExpanded)
@@ -92,11 +92,11 @@ class _ExpandedUserCardState extends State<ExpandedUserCard>
                         ),
                         for (final user in widget.users)
                           UserTile(
-                            userName: user.name,
-                            imageUrl: user.imageUrl,
+                            userName: user.userName,
+                            imageUrl: user.userImageUrl,
                             onClick: () {
                               widget.newsBloc.addPostEvent.add(EventFilterUsers(
-                                  showAllUsers: false, userName: user.name));
+                                  showAllUsers: false, userName: user.userName));
                             },
                           )
                       ],

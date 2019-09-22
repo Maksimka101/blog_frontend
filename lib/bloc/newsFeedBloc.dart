@@ -5,6 +5,7 @@ import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/response.dart';
 import 'package:blog_frontend/repository/backendRepository.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
+import 'package:blog_frontend/repository/entity/repositoryUserEntity.dart';
 import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -26,19 +27,20 @@ class NewsFeedBloc extends BlocBase {
 
   void _filterUsers(EventFilterUsers event) {
     if (event.showAllUsers)
-      _uiDataPostEvent.add(UiEventPosts(usersAndPosts: _previousPosts));
+      _uiDataPostEvent.add(UiEventUsersAndPosts(usersAndPosts: _previousPosts));
     else {
-      _uiDataPostEvent.add(UiEventPosts(usersAndPosts: <UserUiEntity>[
-        _previousPosts.where((user) => user.name == event.userName).first
-      ]));
+      _uiDataPostEvent.add(UiEventUsersAndPosts(
+          usersAndPosts: <RepositoryUserEntity>[
+            _previousPosts.where((user) => user.name == event.userName).first
+          ]));
     }
   }
 
   void _loadUserSubscriptions(String userName) {
     BackendRepository.getAllUserSubscription(userName).then((usersResponse) {
       if (usersResponse.status == Status.Ok) {
-        _uiDataPostEvent
-            .add(UiEventPosts(usersAndPosts: usersResponse.typedBody.list));
+        _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
+            posts: _convertAndSortPosts(usersResponse.typedBody.list)));
         _previousPosts = usersResponse.typedBody.list;
       } else {
         _uiPostEvent.add(UiEventError(
@@ -48,7 +50,16 @@ class NewsFeedBloc extends BlocBase {
     });
   }
 
-  List<UserUiEntity> _previousPosts;
+  List<UiUserEntity> _convertAndSortPosts(List<RepositoryUserEntity> users) => users
+        .map((user) => user.posts
+            .map((post) => UiUserEntity(
+                userName: user.name, post: post, userImageUrl: user.imageUrl))
+            .toList())
+        .reduce((list, elem) => list..addAll(elem))
+        ..sort((user1, user2) =>
+            -user1.post.createDate.compareTo(user2.post.createDate));
+
+  List<RepositoryUserEntity> _previousPosts;
 
   final _scrollPositionScream = PublishSubject<double>();
   Stream<double> get scrollPosition => _scrollPositionScream.stream;
