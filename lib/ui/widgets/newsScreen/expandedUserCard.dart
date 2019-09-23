@@ -11,7 +11,7 @@ class ExpandedUserCard extends StatefulWidget {
       {@required this.users,
       @required this.newsBloc,
       @required this.currentUserIndex,
-      this.expandDuration = const Duration(milliseconds: 350)});
+      this.expandDuration = const Duration(milliseconds: 400)});
 
   final List<UiUserEntity> users;
   final int currentUserIndex;
@@ -23,7 +23,7 @@ class ExpandedUserCard extends StatefulWidget {
 }
 
 class _ExpandedUserCardState extends State<ExpandedUserCard>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   bool _isExpanded = false;
   var _isDisposed = false;
   var _sizeFactor = 1.0;

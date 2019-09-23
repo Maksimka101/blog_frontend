@@ -11,7 +11,7 @@ class NewsScreenNewsCard extends StatefulWidget {
   _NewsScreenNewsCardState createState() => _NewsScreenNewsCardState();
 }
 
-class _NewsScreenNewsCardState extends State<NewsScreenNewsCard> {
+class _NewsScreenNewsCardState extends State<NewsScreenNewsCard> with TickerProviderStateMixin{
   var _sizeFactor = 0.0;
   var _isDisposed = false;
   var _isExpanded = false;
@@ -40,19 +40,40 @@ class _NewsScreenNewsCardState extends State<NewsScreenNewsCard> {
     if (_paddingHeight == 0.0) {
       _paddingHeight = MediaQuery.of(context).size.height * 0.15;
     }
-
-    return Padding(
-      padding: EdgeInsets.only(
-        top: _paddingHeight * _sizeFactor,
-      ),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7 -
-            _sizeFactor * _paddingHeight * 0.7,
+    final card = GestureDetector(
+      onTap: () => setState(() => _isExpanded = !_isExpanded),
+      child: AnimatedSize(
+        duration: Duration(milliseconds: 500),
+        vsync: this,
         child: CommonNewsCard(
+          isExpanded: _isExpanded,
           imageUrl: widget.post.imageUrl,
           title: widget.post.title,
           commentsCount: widget.post.comments.length,
           content: widget.post.content,
+        ),
+      ),
+    );
+    return Padding(
+      padding: EdgeInsets.only(
+        top:!_isExpanded ? _paddingHeight * _sizeFactor : 0,
+      ),
+      child: SizedBox(
+        height: !_isExpanded ? MediaQuery.of(context).size.height * 0.7 -
+            _sizeFactor * _paddingHeight * 0.7 : null,
+        child: GestureDetector(
+          onTap: () => setState(() => _isExpanded = !_isExpanded),
+          child: AnimatedSize(
+            duration: Duration(milliseconds: 200),
+            vsync: this,
+            child: CommonNewsCard(
+              isExpanded: _isExpanded,
+              imageUrl: widget.post.imageUrl,
+              title: widget.post.title,
+              commentsCount: widget.post.comments.length,
+              content: widget.post.content,
+            ),
+          ),
         ),
       ),
     );

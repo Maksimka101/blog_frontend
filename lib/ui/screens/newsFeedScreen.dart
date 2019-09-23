@@ -52,21 +52,23 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                     return Stack(
                       alignment: Alignment.topCenter,
                       children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: SizedBox(
-                                child: UserTile(),
-                                width: 100,
+                        SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              Opacity(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  child: UserTile(),
+                                ),
+                                opacity: 0.0,
                               ),
-                            ),
-                            NewsScreenNewsCard(
-                              scrollPosition: _feedBloc.scrollPosition,
-                              post: usersAndPosts[i].post,
-                              currentPostIndex: i,
-                            ),
-                          ],
+                              NewsScreenNewsCard(
+                                scrollPosition: _feedBloc.scrollPosition,
+                                post: usersAndPosts[i].post,
+                                currentPostIndex: i,
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(

@@ -71,7 +71,7 @@ class _NewsCardContentText extends StatelessWidget {
         overflow: TextOverflow.fade,
       ),
     );
-    return isExpanded ? Expanded(
+    return !isExpanded ? Expanded(
       child: content,
     ) : content;
   }
