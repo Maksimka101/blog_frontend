@@ -2,12 +2,8 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/contants.dart';
-import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
-import 'package:blog_frontend/ui/widgets/newsScreen/newsCard.dart';
-import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
-import 'package:blog_frontend/ui/widgets/common/userTile.dart';
-import 'package:blog_frontend/ui/widgets/newsScreen/expandedUserCard.dart';
 import 'package:blog_frontend/ui/widgets/common/loadingWidget.dart';
+import 'package:blog_frontend/ui/widgets/newsScreen/newsScreenPage.dart';
 import 'package:flutter/material.dart';
 
 class NewsFeedScreen extends StatefulWidget {
@@ -39,54 +35,27 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
       builder: (context, postsSnapshot) {
         if (postsSnapshot.hasData) {
           final usersAndPosts = (postsSnapshot.data as UiEventSmallUsersAndPosts).posts;
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                height:
-                    MediaQuery.of(context).size.height - toolAndAppBarHeight,
-                child: PageView.builder(
-                  controller: _pageViewController,
-                  itemCount: usersAndPosts.length,
-                  itemBuilder: (context, i) {
-                    return Stack(
-                      alignment: Alignment.topCenter,
-                      children: <Widget>[
-                        SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              Opacity(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                  child: UserTile(),
-                                ),
-                                opacity: 0.0,
-                              ),
-                              NewsScreenNewsCard(
-                                scrollPosition: _feedBloc.scrollPosition,
-                                post: usersAndPosts[i].post,
-                                currentPostIndex: i,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 0,
-                          ),
-                          child: ExpandedUserCard(
-                            currentUserIndex: i,
-                            newsBloc: _feedBloc,
-                            users: usersAndPosts,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              )
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                SizedBox(
+                  height:
+                      MediaQuery.of(context).size.height - toolAndAppBarHeight,
+                  child: PageView.builder(
+                    controller: _pageViewController,
+                    itemCount: usersAndPosts.length,
+                    itemBuilder: (context, i) {
+                      return NewsScreenPage(
+                        usersAndPosts: usersAndPosts,
+                        feedBloc: _feedBloc,
+                        index: i,
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           );
         } else
           return LoadingWidget();

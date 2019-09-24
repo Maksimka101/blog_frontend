@@ -6,6 +6,8 @@ class LoginScreenValidator {
   String nameValidator(String name) {
     if (name.length < 4) return "Слишком короткое имя";
     if (name.length > 16) return "Слишком длинное имя";
+    if (name.contains(' ')) return 'Имя не может содержать пробелы';
+    if (name.contains('&') || name.contains('?')) return 'Имя не может содержать & и ?';
     userName = name;
     return null;
   }
@@ -37,6 +39,8 @@ class AuthScreenValidator {
   String nameValidator(String name) {
     if (name.length < 4) return "Слишком короткое имя";
     if (name.length > 16) return "Слишком длинное имя";
+    if (name.contains(' ')) return 'Имя не может содержать пробелы';
+    if (name.contains('&') || name.contains('?')) return 'Имя не может содержать & и ?';
     userName = name;
     return null;
   }

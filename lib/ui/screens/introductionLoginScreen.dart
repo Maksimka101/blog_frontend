@@ -53,23 +53,24 @@ class IntroductionLoginScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                    child: Text(
-                      "Пропустить",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    onPressed: () {
-                      loginBloc.authEvents.add(SignInAnonymousEvent());
-                    },
-                  ),
-                ),
+// todo: сделать анонимную авторизацию
+//                Padding(
+//                  padding:
+//                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+//                  child: RaisedButton(
+//                    shape: RoundedRectangleBorder(
+//                        borderRadius: BorderRadius.all(Radius.circular(10))
+//                    ),
+//                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+//                    child: Text(
+//                      "Пропустить",
+//                      style: TextStyle(color: Colors.white, fontSize: 20),
+//                    ),
+//                    onPressed: () {
+//                      loginBloc.authEvents.add(SignInAnonymousEvent());
+//                    },
+//                  ),
+//                ),
               ],
             ),
           ),

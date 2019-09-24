@@ -13,12 +13,14 @@ class InternalRepository {
     InternalRepositoryUser(
         isAnonymous: anon == 'true',
         password: await storage.read(key: 'password'),
-        name: await storage.read(key: 'uuid'));
+        name: await storage.read(key: 'uuid'),
+    imageUrl: await storage.read(key: 'imageUrl'));
   }
 
   void _updateClient(InternalRepositoryUser repositoryUser) {
     storage.write(key: 'password', value: repositoryUser.password);
     storage.write(key: 'uuid', value: repositoryUser.name);
     storage.write(key: 'anonymous', value: repositoryUser.isAnonymous.toString());
+    storage.write(key: 'imageUrl', value: repositoryUser.imageUrl);
   }
 }

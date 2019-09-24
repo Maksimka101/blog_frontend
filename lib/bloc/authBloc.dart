@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:blog_frontend/bloc/globalBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/model/response.dart';
 import 'package:blog_frontend/model/user.dart';
@@ -18,14 +17,11 @@ class AuthBloc extends BlocBase {
         if (!user.isAnonymous)
           BackendRepository.getUser(user.name).then((response) {
             if (response.status == Status.Ok) {
-              BlocProvider.getBloc<GlobalBloc>()
-                  .setUserStream
-                  .add(response.typedBody);
               _uiEventsStream.add(UiEventUserIsAuthenticated());
             } else
               _uiEventsStream.add(UiEventAuthenticateError(
                   'Ошибка при загрузке данных с сервера, попробуйте '
-                  'перезайти в аккаунт и проверьте подключение к интернету'));
+                      'перезайти в аккаунт и проверьте подключение к интернету'));
           });
         else
           _uiEventsStream.add(UiEventUserIsAuthenticated());
@@ -67,6 +63,7 @@ class AuthBloc extends BlocBase {
       isAnonymous: true,
       password: '',
       name: '',
+      imageUrl: '',
     );
     _uiEventsStream.add(UiEventUserIsAuthenticated());
   }
@@ -75,6 +72,7 @@ class AuthBloc extends BlocBase {
     BackendRepository.getUser(authEvent.userName).then((response) {
       if (response.status == Status.Ok) {
         _internalRepository.user = InternalRepositoryUser(
+            imageUrl: response.typedBody.imageUrl,
             isAnonymous: false,
             name: authEvent.userName,
             password: authEvent.userPassword);
@@ -82,20 +80,22 @@ class AuthBloc extends BlocBase {
       } else {
         _uiEventsStream.add(UiEventAuthenticateError(
             'Ошибка на сервере. Возможно вы ввели не верные данные, '
-            'еще не зарегестрировались или у вас нет интернета.'));
+                'еще не зарегестрировались или у вас нет интернета.'));
       }
     });
   }
 
   void _registerWithPassword(RegisterEvent registerEvent) {
+    final imageUrl = FirebaseRepository.saveUserImage(registerEvent.userAvatar);
     final cacheUser = InternalRepositoryUser(
+        imageUrl: imageUrl,
         isAnonymous: false,
         password: registerEvent.userPassword,
         name: registerEvent.userName);
     _internalRepository.user = cacheUser;
     final user = User(
         name: registerEvent.userName,
-        imageUrl: FirebaseRepository.saveUserImage(registerEvent.userAvatar));
+        imageUrl: imageUrl);
     BackendRepository.registerUser(user).then((resp) {
       if (resp.status != Status.Ok)
         _uiEventsStream.add(UiEventLoginError('Ошибка при регистрации. '

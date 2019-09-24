@@ -15,6 +15,12 @@ class EventFilterUsers extends PostEvent {
   final String userName;
 }
 
+class EventCreateComment extends PostEvent {
+  EventCreateComment({this.message, this.postId});
+  final String message;
+  final int postId;
+}
+
 class EventCommentPost extends PostEvent {}
 
 

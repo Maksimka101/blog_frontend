@@ -1,14 +1,13 @@
 import 'package:blog_frontend/model/serializable.dart';
 
 class User implements Serializable {
-  User(
-      {this.name,
-      this.imageUrl});
+  User({this.name, this.imageUrl});
 
   void fromJson(dynamic json) {
     name = json['name'];
     imageUrl = json['image_url'];
   }
+
   String name;
   String imageUrl;
 

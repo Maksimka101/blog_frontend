@@ -1,6 +1,7 @@
 import 'package:blog_frontend/model/comment.dart';
 
 class UiPostEntity {
+  int id;
   String title;
   String content;
   String imageUrl;
@@ -10,6 +11,7 @@ class UiPostEntity {
   void fromJson(json) {
     title = json['title'];
     content = json['content'];
+    id = json['id'];
     imageUrl = json['image_url'];
     final List<String> date = json['create_date'].split('-');
     createDate = DateTime.utc(

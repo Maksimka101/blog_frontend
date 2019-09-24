@@ -68,10 +68,12 @@ class BackendRepository {
           .map((_) => RepositoryUserEntity())
           .cast<RepositoryUserEntity>()
           .toList();
+      print('dslkjf');
       response = Response<SerializableList<RepositoryUserEntity>>.fromJson(
           decodedResponse,
           typedBody: SerializableList<RepositoryUserEntity>(list: listForDecode));
     } catch (e) {
+      print('exeptinon while load user with subscriptions');
       response = Response<SerializableList<RepositoryUserEntity>>(status: Status.Error);
     }
     return response;
@@ -127,13 +129,19 @@ class BackendRepository {
   }
 
   static Future<Response> createComment(Comment comment) async {
-    final request = await http.post('$BACKEND_URL/blog/comment/create',
-        headers: {
-          'password': InternalRepositoryUser.instance.password,
-        },
-        body: jsonEncode(comment.toJson()));
-    final response =
-        Response.fromJson(jsonDecode(request.body), typedBody: null);
+    comment.authorId = InternalRepositoryUser.instance.name;
+    Response response;
+    try {
+      final request = await http.post('$BACKEND_URL/blog/user/comment/create',
+          headers: {
+            'password': InternalRepositoryUser.instance.password,
+          },
+          body: jsonEncode(comment.toJson()));
+      response =
+      Response.fromJson(jsonDecode(request.body), typedBody: null);
+    } catch (e) {
+      response = Response(status: Status.Error, responseMessage: 'Ошибка на сервере. Возможно нет интернета или прав доступа.');
+    }
     return response;
   }
 

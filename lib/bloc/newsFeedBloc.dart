@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
+import 'package:blog_frontend/model/comment.dart';
 import 'package:blog_frontend/model/response.dart';
 import 'package:blog_frontend/repository/backendRepository.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
@@ -21,6 +22,9 @@ class NewsFeedBloc extends BlocBase {
         break;
       case EventFilterUsers:
         _filterUsers(event as EventFilterUsers);
+        break;
+      case EventCreateComment:
+        _createComment(event as EventCreateComment);
         break;
     }
   }
@@ -50,19 +54,32 @@ class NewsFeedBloc extends BlocBase {
     });
   }
 
-  List<UiUserEntity> _convertAndSortPosts(List<RepositoryUserEntity> users) => users
-        .map((user) => user.posts
-            .map((post) => UiUserEntity(
-                userName: user.name, post: post, userImageUrl: user.imageUrl))
-            .toList())
-        .reduce((list, elem) => list..addAll(elem))
-        ..sort((user1, user2) =>
-            -user1.post.createDate.compareTo(user2.post.createDate));
+  void _createComment(EventCreateComment event) {
+    final comment = Comment(
+      content: event.message,
+      postId: event.postId,
+      authorId: InternalRepositoryUser.instance.name
+    );
+    BackendRepository.createComment(comment);
+  }
+
+  List<UiUserEntity>
+      _convertAndSortPosts(List<RepositoryUserEntity> users) => users
+          .map((user) => user
+              .posts
+              .map((post) => UiUserEntity(
+                  userName: user.name, post: post, userImageUrl: user.imageUrl))
+              .toList())
+          .reduce((list, elem) => list..addAll(elem))
+            ..sort((user1, user2) =>
+                -user1.post.createDate.compareTo(user2.post.createDate));
 
   List<RepositoryUserEntity> _previousPosts;
 
   final _scrollPositionScream = PublishSubject<double>();
+
   Stream<double> get scrollPosition => _scrollPositionScream.stream;
+
   StreamSink<double> get updateScrollPosition => _scrollPositionScream.sink;
 
   final _postEvents = PublishSubject<PostEvent>();
@@ -73,6 +90,7 @@ class NewsFeedBloc extends BlocBase {
   final _uiPostEvent = PublishSubject<UiPostEvent>();
 
   Stream<UiPostEvent> get uiPostEvent => _uiPostEvent.stream;
+
   StreamSink<UiPostEvent> get addUiPostEvent => _uiPostEvent.sink;
 
   final _uiDataPostEvent = PublishSubject<UiDataPostEvent>();
