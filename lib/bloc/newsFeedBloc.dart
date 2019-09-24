@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/comment.dart';
@@ -18,7 +17,7 @@ class NewsFeedBloc extends BlocBase {
   void _listenPostEvent(PostEvent event) {
     switch (event.runtimeType) {
       case EventLoadPosts:
-        _loadUserSubscriptions(InternalRepositoryUser.instance.name);
+        _loadUserSubscriptions(event as EventLoadPosts);
         break;
       case EventFilterUsers:
         _filterUsers(event as EventFilterUsers);
@@ -40,8 +39,8 @@ class NewsFeedBloc extends BlocBase {
     }
   }
 
-  void _loadUserSubscriptions(String userName) {
-    BackendRepository.getAllUserSubscription(userName).then((usersResponse) {
+  void _loadUserSubscriptions(EventLoadPosts event) {
+    BackendRepository.getAllUserSubscription(event.userName).then((usersResponse) {
       if (usersResponse.status == Status.Ok) {
         _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
             posts: _convertAndSortPosts(usersResponse.typedBody.list)));

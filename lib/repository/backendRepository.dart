@@ -95,7 +95,7 @@ class BackendRepository {
     return response;
   }
 
-  static Future<Response<SerializableList<User>>> getUserByName(
+  static Future<Response<SerializableList<User>>> getUsersByName(
       String name) async {
     final request = await http.get('$BACKEND_URL/blog/user/find_by_name/$name');
     final decodedRequest = jsonDecode(request.body);
