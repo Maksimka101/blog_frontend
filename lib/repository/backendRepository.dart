@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:blog_frontend/model/comment.dart';
 import 'package:blog_frontend/model/post.dart';
+import 'package:blog_frontend/model/response.dart';
 import 'package:blog_frontend/model/serializableList.dart';
 import 'package:blog_frontend/model/user.dart';
-import 'package:blog_frontend/model/response.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/repository/entity/repositoryUserEntity.dart';
 import 'package:http/http.dart' as http;
@@ -26,16 +27,16 @@ class BackendRepository {
       '"4d32d456-132d-4920-85e5-f83b05161737", "posts": []}]}';
   static const String BACKEND_URL = "http://vlog-backend.appspot.com";
 
+  static Map<String, String> _headers() => {
+        'password': InternalRepositoryUser.instance.password,
+      };
+
   static Future<Response> registerUser(User user) async {
-    final json = jsonEncode(user.toJson());
     Response response;
     try {
-      print(json);
+      final json = jsonEncode(user.toJson());
       final backendResponse = await http.post("$BACKEND_URL/blog/user/create",
-          headers: {
-            'password': InternalRepositoryUser.instance.password,
-          },
-          body: json);
+          headers: _headers(), body: json);
       final decodedResponse = jsonDecode(backendResponse.body);
       response = Response.fromJson(decodedResponse);
     } catch (e) {
@@ -52,6 +53,7 @@ class BackendRepository {
       final decodedResponse = jsonDecode(backendResponse.body);
       response = Response<User>.fromJson(decodedResponse, typedBody: User());
     } catch (e) {
+      print(e);
       response = Response<User>(status: Status.Error);
     }
     return response;
@@ -71,60 +73,93 @@ class BackendRepository {
       print('dslkjf');
       response = Response<SerializableList<RepositoryUserEntity>>.fromJson(
           decodedResponse,
-          typedBody: SerializableList<RepositoryUserEntity>(list: listForDecode));
+          typedBody:
+              SerializableList<RepositoryUserEntity>(list: listForDecode));
     } catch (e) {
       print('exeptinon while load user with subscriptions');
-      response = Response<SerializableList<RepositoryUserEntity>>(status: Status.Error);
+      response = Response<SerializableList<RepositoryUserEntity>>(
+          status: Status.Error);
     }
     return response;
   }
 
   static Future<Response> subscribeUser(
       String userId, String subscriberId) async {
-    final request = await http.post(
-        '$BACKEND_URL/blog/user/subscribe?user=$userId&subscriber$subscriberId');
-    final response = Response.fromJson(jsonDecode(request.body));
+    Response response;
+    try {
+      final request = await http.post(
+          '$BACKEND_URL/blog/user/subscribe?user=$userId&subscriber=$subscriberId',
+          headers: _headers());
+      response = Response.fromJson(jsonDecode(request.body));
+    } catch (e) {
+      print(e);
+      response = Response(status: Status.Error);
+    }
     return response;
   }
 
   static Future<Response> unsubscribeUser(
       String userId, String subscriberId) async {
-    final request = await http.post(
-        '$BACKEND_URL/blog/user/unsubscribe?user=$userId&subscriber$subscriberId');
-    final response = Response.fromJson(jsonDecode(request.body));
+    Response response;
+    try {
+      final request = await http.post(
+          '$BACKEND_URL/blog/user/unsubscribe?user=$userId&subscriber=$subscriberId',
+          headers: _headers());
+      response = Response.fromJson(jsonDecode(request.body));
+    } catch (e) {
+      print(e);
+      response = Response(status: Status.Error);
+    }
     return response;
   }
 
   static Future<Response<SerializableList<User>>> getUsersByName(
       String name) async {
-    final request = await http.get('$BACKEND_URL/blog/user/find_by_name/$name');
-    final decodedRequest = jsonDecode(request.body);
-    final response = Response<SerializableList<User>>.fromJson(decodedRequest,
-        typedBody: SerializableList(
-            list: decodedRequest['body']
-                .map((_) => User())
-                .cast<User>()
-                .toList()));
+    Response<SerializableList<User>> response;
+    try {
+      final request =
+          await http.get('$BACKEND_URL/blog/user/find_by_name/$name');
+      final decodedRequest = jsonDecode(request.body);
+      response = Response<SerializableList<User>>.fromJson(decodedRequest,
+          typedBody: SerializableList(
+              list: decodedRequest['body']
+                  .map((_) => User())
+                  .cast<User>()
+                  .toList()));
+    } catch (e) {
+      print(e);
+      response = Response<SerializableList<User>>(status: Status.Error);
+    }
     return response;
   }
 
   static Future<Response> updatePost(Post post) async => await createPost(post);
 
   static Future<Response> createPost(Post post) async {
-    final jsonPost = jsonEncode(post.toJson());
-    final request = await http.post('$BACKEND_URL/blog/create_post',
-        headers: {'password': InternalRepositoryUser.instance.password},
-        body: jsonPost);
-    final response = Response.fromJson(jsonDecode(request.body));
+    Response response;
+    try {
+      final jsonPost = jsonEncode(post.toJson());
+      final request = await http.post('$BACKEND_URL/blog/create_post',
+          headers: _headers(), body: jsonPost);
+      response = Response.fromJson(jsonDecode(request.body));
+    } catch (e) {
+      print(e);
+      response = Response(status: Status.Error);
+    }
     return response;
   }
 
   static Future<Response> deletePost(String postId) async {
-    final request = await http.delete(
-        '$BACKEND_URL/blog/user/delete_post/$postId',
-        headers: {"password": InternalRepositoryUser.instance.password});
-    final response =
-        Response.fromJson(jsonDecode(request.body), typedBody: null);
+    Response response;
+    try {
+      final request = await http.delete(
+          '$BACKEND_URL/blog/user/delete_post/$postId',
+          headers: _headers());
+      response = Response.fromJson(jsonDecode(request.body), typedBody: null);
+    } catch (e) {
+      print(e);
+      response = Response(status: Status.Error);
+    }
     return response;
   }
 
@@ -133,24 +168,29 @@ class BackendRepository {
     Response response;
     try {
       final request = await http.post('$BACKEND_URL/blog/user/comment/create',
-          headers: {
-            'password': InternalRepositoryUser.instance.password,
-          },
-          body: jsonEncode(comment.toJson()));
-      response =
-      Response.fromJson(jsonDecode(request.body), typedBody: null);
+          headers: _headers(), body: jsonEncode(comment.toJson()));
+      response = Response.fromJson(jsonDecode(request.body), typedBody: null);
     } catch (e) {
-      response = Response(status: Status.Error, responseMessage: 'Ошибка на сервере. Возможно нет интернета или прав доступа.');
+      print(e);
+      response = Response(
+          status: Status.Error,
+          responseMessage:
+              'Ошибка на сервере. Возможно нет интернета или прав доступа.');
     }
     return response;
   }
 
   static Future<Response> deleteComment(String commentId) async {
-    final request = await http.post(
-        '$BACKEND_URL/blog/comment/delete/$commentId',
-        headers: {'password': InternalRepositoryUser.instance.password});
-    final response =
-        Response.fromJson(jsonDecode(request.body), typedBody: null);
+    Response response;
+    try {
+      final request = await http.post(
+          '$BACKEND_URL/blog/comment/delete/$commentId',
+          headers: _headers());
+      response = Response.fromJson(jsonDecode(request.body), typedBody: null);
+    } catch (e) {
+      print(e);
+      response = Response(status: Status.Error);
+    }
     return response;
   }
 }

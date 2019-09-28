@@ -7,10 +7,22 @@ class EventFindUserByName extends FindEvent {
   final String name;
 }
 
+class EventSubscribeUser extends FindEvent {
+  EventSubscribeUser({this.name});
+  final String name;
+}
+
+class EventUnsubscribeUser extends FindEvent {
+  EventUnsubscribeUser({this.name});
+  final String name;
+}
+
+
 class FindUiEvent {}
 
 class UiEventFoundUsers extends FindUiEvent {
-  UiEventFoundUsers({this.users});
+  UiEventFoundUsers({this.users, this.subscriptions});
+  final List<String> subscriptions;
   final List<User> users;
 }
 

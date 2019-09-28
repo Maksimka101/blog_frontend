@@ -33,11 +33,23 @@ class UserTile extends StatelessWidget {
                   )),
             SizedBox(width: 20),
             Flexible(
-              child: Text(
-                startToUpper(userName),
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                overflow: TextOverflow.ellipsis,
-              ),
+              child: button != null
+                  ? Row(
+                      children: <Widget>[
+                        Text(
+                          startToUpper(userName),
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.w500),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    )
+                  : Text(
+                      startToUpper(userName),
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                      overflow: TextOverflow.ellipsis,
+                    ),
             ),
             if (button != null) button,
           ],

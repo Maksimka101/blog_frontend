@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:blog_frontend/bloc/findUserBloc.dart';
 import 'package:blog_frontend/bloc/globalBloc.dart';
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/bloc/startAppBloc.dart';
@@ -34,6 +35,7 @@ class SetupBlocProvider extends StatelessWidget {
         Bloc((inject) => AuthBloc()),
         Bloc((inject) => GlobalBloc()),
         Bloc((inject) => NewsFeedBloc()),
+        Bloc((inject) => FindUserBloc())
       ],
       dependencies: [
         Dependency((i) => InternalRepository()),

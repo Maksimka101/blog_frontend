@@ -78,6 +78,7 @@ class AuthBloc extends BlocBase {
             password: authEvent.userPassword);
         _uiEventsStream.add(UiEventUserIsAuthenticated());
       } else {
+        print(response.body);
         _uiEventsStream.add(UiEventAuthenticateError(
             'Ошибка на сервере. Возможно вы ввели не верные данные, '
                 'еще не зарегестрировались или у вас нет интернета.'));
