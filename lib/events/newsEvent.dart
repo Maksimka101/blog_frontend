@@ -26,11 +26,6 @@ class EventCommentPost extends PostEvent {}
 
 class UiDataPostEvent {}
 
-class UiEventUsersAndPosts extends UiDataPostEvent {
-  UiEventUsersAndPosts({this.usersAndPosts});
-  final List<RepositoryUserEntity> usersAndPosts;
-}
-
 class UiEventSmallUsersAndPosts extends UiDataPostEvent {
   UiEventSmallUsersAndPosts({@required this.posts});
   final List<UiUserEntity> posts;

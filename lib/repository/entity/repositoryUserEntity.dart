@@ -1,5 +1,6 @@
 import 'package:blog_frontend/model/serializable.dart';
 import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
+import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
 
 class RepositoryUserEntity implements Serializable {
   String name;
@@ -19,4 +20,15 @@ class RepositoryUserEntity implements Serializable {
   toJson() {
     return null;
   }
+
+  static List<UiUserEntity> convertForUiAndSort(
+          List<RepositoryUserEntity> users) =>
+      users
+          .map((user) => user.posts
+              .map((post) => UiUserEntity(
+                  userName: user.name, post: post, userImageUrl: user.imageUrl))
+              .toList())
+          .reduce((list, elem) => list..addAll(elem))
+            ..sort((user1, user2) =>
+                -user1.post.createDate.compareTo(user2.post.createDate));
 }

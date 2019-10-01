@@ -29,7 +29,7 @@ class SetupBlocProvider extends StatelessWidget {
             primaryColor: Colors.deepPurple,
             appBarTheme: AppBarTheme(
 //              color: const Color.fromARGB(255, 120, 0, 80),
-                color: Colors.deepPurple)),
+                color: Colors.teal[600])),
       ),
       blocs: [
         Bloc((inject) => AuthBloc()),

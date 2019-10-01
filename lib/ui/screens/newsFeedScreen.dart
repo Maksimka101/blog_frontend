@@ -22,8 +22,20 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
     _feedBloc.updateScrollPosition.add(_pageViewController.page);
   }
 
+  void _listenForError(UiPostEvent eventError) {
+    switch (eventError.runtimeType) {
+      case UiEventError:
+        _showAlertDialog((eventError as UiEventError).message);
+        break;
+    }
+  }
+
+  void _showAlertDialog(String message) =>
+      showDialog(context: context, child: Text(message));
+
   @override
   void initState() {
+    _feedBloc.uiPostEvent.listen(_listenForError);
     _pageViewController.addListener(_listenPageViewController);
     _feedBloc.addPostEvent
         .add(EventLoadPosts(userName: InternalRepositoryUser.instance.name));

@@ -46,7 +46,7 @@ class BackendRepository {
   }
 
   static Future<Response<User>> getUser(String uuid) async {
-    Response response;
+    Response<User> response;
     try {
       final backendResponse =
           await http.get("$BACKEND_URL/blog/user/get/$uuid");
@@ -55,6 +55,22 @@ class BackendRepository {
     } catch (e) {
       print(e);
       response = Response<User>(status: Status.Error);
+    }
+    return response;
+  }
+
+  static Future<Response<RepositoryUserEntity>> getUserWithPosts(
+      String uuid) async {
+    Response<RepositoryUserEntity> response;
+    try {
+      final backendResponse =
+          await http.get("$BACKEND_URL/blog/user/get_full/$uuid");
+      final decodedResponse = jsonDecode(backendResponse.body);
+      response = Response<RepositoryUserEntity>.fromJson(decodedResponse,
+          typedBody: RepositoryUserEntity());
+    } catch (e) {
+      print(e);
+      response = Response<RepositoryUserEntity>(status: Status.Error);
     }
     return response;
   }
