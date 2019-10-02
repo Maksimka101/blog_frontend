@@ -2,12 +2,23 @@ import 'package:blog_frontend/bloc/loginBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/utils/validators.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen(this.loginBloc);
+
   final LoginBloc loginBloc;
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _form = GlobalKey<FormState>();
+
   final _loginScreenValidator = LoginScreenValidator();
+
+  final _registerEvent = RegisterEvent();
 
   void _listenEvent(UiEventLogin event, BuildContext context) {
     switch (event.runtimeType) {
@@ -31,26 +42,43 @@ class LoginScreen extends StatelessWidget {
             ],
           ));
 
-  // todo добавить выбор фото
+  void _pickImage() async {
+    final image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _registerEvent.userAvatar = image;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    Future.delayed(Duration(seconds: 0)).then((_) => widget.loginBloc.uiEvents
+        .listen((event) => _listenEvent(event, context)));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: 0)).then((_) =>
-        loginBloc.uiEvents.listen((event) => _listenEvent(event, context)));
     return Center(
       child: SingleChildScrollView(
         child: Form(
           key: _form,
           child: Column(
             children: <Widget>[
-              CircleAvatar(
-                radius: 75,
-                child: Text(
-                  "Выберите фото",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w700),
+              InkWell(
+                child: CircleAvatar(
+                  radius: 90,
+                  backgroundImage: _registerEvent.userAvatar != null ? FileImage(_registerEvent.userAvatar) : null,
+                  child: _registerEvent.userAvatar == null
+                      ? Text(
+                          "Нажмите, чтобы выбрать фото",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w700),
+                        )
+                      : null,
                 ),
+                onTap: _pickImage,
               ),
               Padding(
                 padding:
@@ -113,12 +141,9 @@ class LoginScreen extends StatelessWidget {
                     if (_form.currentState.validate()) {
                       final userName = _loginScreenValidator.userName;
                       final userPassword = _loginScreenValidator.userPassword;
-                      // todo: add user avatar
-                      loginBloc.authEvents.add(RegisterEvent(
-                        userName: userName,
-                        userPassword: userPassword,
-//                    userAvatar: userAvatar
-                      ));
+                      _registerEvent.userName = userName;
+                      _registerEvent.userPassword = userPassword;
+                      widget.loginBloc.authEvents.add(_registerEvent);
                     }
                   },
                 ),

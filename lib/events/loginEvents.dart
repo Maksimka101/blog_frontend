@@ -10,9 +10,9 @@ class RegisterEvent extends LoginEvent {
     this.userAvatar,
   });
 
-  final String userName;
-  final String userPassword;
-  final File userAvatar;
+  String userName;
+  String userPassword;
+  File userAvatar;
 }
 
 class AuthenticateEvent extends LoginEvent {

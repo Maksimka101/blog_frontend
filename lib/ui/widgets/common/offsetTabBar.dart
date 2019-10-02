@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class OffsetNavigationBar extends StatefulWidget {
-  OffsetNavigationBar({
+class OffsetBottomNavigationBar extends StatefulWidget {
+  OffsetBottomNavigationBar({
     this.backgroundColor,
     this.offset = const Offset(45, 0),
     @required this.controller,
@@ -19,10 +19,11 @@ class OffsetNavigationBar extends StatefulWidget {
   final TabController controller;
 
   @override
-  _OffsetNavigationBarState createState() => _OffsetNavigationBarState();
+  _OffsetBottomNavigationBarState createState() =>
+      _OffsetBottomNavigationBarState();
 }
 
-class _OffsetNavigationBarState extends State<OffsetNavigationBar> {
+class _OffsetBottomNavigationBarState extends State<OffsetBottomNavigationBar> {
   @override
   void initState() {
     widget.controller.addListener(() {
@@ -43,8 +44,7 @@ class _OffsetNavigationBarState extends State<OffsetNavigationBar> {
     return Transform.translate(
       offset: widget.offset,
       child: Theme(
-        data: Theme.of(context)
-            .copyWith(canvasColor: Colors.transparent),
+        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
         child: Container(
           decoration: BoxDecoration(
             boxShadow: <BoxShadow>[
@@ -65,6 +65,27 @@ class _OffsetNavigationBarState extends State<OffsetNavigationBar> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class OffsetBottomBar extends StatelessWidget {
+  OffsetBottomBar({this.offset = const Offset(45, 0), this.backgroundColor});
+
+  final Offset offset;
+  final Color backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      child: Container(
+        height: kBottomNavigationBarHeight,
+        decoration: BoxDecoration(
+          color: backgroundColor??AppBarTheme.of(context).color,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(9))
+        ),
+      ),
+      offset: offset,
     );
   }
 }

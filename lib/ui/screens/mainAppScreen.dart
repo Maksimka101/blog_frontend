@@ -41,7 +41,7 @@ class _MainAppScreenState extends State<MainAppScreen>
           SettingsScreen()
         ],
       ),
-      bottomNavigationBar: OffsetNavigationBar(
+      bottomNavigationBar: OffsetBottomNavigationBar(
           controller: _tabController,
           tabs: <BottomNavigationBarItem>[
             BottomNavigationBarItem(

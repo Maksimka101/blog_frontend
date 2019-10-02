@@ -2,10 +2,11 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/authBloc.dart';
 import 'package:blog_frontend/bloc/loginBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
-import 'package:blog_frontend/ui/widgets/common/offsetAppbar.dart';
-import 'package:blog_frontend/ui/screens/signin/authorizationScreen.dart';
 import 'package:blog_frontend/ui/screens/introductionLoginScreen.dart';
+import 'package:blog_frontend/ui/screens/signin/authorizationScreen.dart';
 import 'package:blog_frontend/ui/screens/signin/loginScreen.dart';
+import 'package:blog_frontend/ui/widgets/common/offsetAppbar.dart';
+import 'package:blog_frontend/ui/widgets/common/offsetTabBar.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -50,17 +51,19 @@ class _SignInScreenState extends State<SignInScreen>
         return false;
       },
       child: Scaffold(
-          appBar: OffsetAppBar(
-            title: Text("Регистрация"),
-          ),
-          body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              LoginScreen(_loginBloc),
-              IntroductionLoginScreen(_loginBloc),
-              AuthorizationScreen(_loginBloc),
-            ],
-          )),
+        appBar: OffsetAppBar(
+          title: Text("Регистрация"),
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: <Widget>[
+            LoginScreen(_loginBloc),
+            IntroductionLoginScreen(_loginBloc),
+            AuthorizationScreen(_loginBloc),
+          ],
+        ),
+        bottomNavigationBar: OffsetBottomBar(),
+      ),
     );
   }
 }

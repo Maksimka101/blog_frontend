@@ -28,7 +28,7 @@ packages:
       name: bloc_pattern
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -137,6 +137,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+  image_picker:
+    dependency: "direct main"
+    description:
+      name: image_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.1+4"
   matcher:
     dependency: transitive
     description:
@@ -218,7 +225,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.6+4"
+    version: "1.1.7"
   stack_trace:
     dependency: transitive
     description:
@@ -290,5 +297,5 @@ packages:
     source: hosted
     version: "3.5.0"
 sdks:
-  dart: ">=2.4.0 <3.0.0"
-  flutter: ">=1.5.0 <2.0.0"
+  dart: ">=2.5.0 <3.0.0"
+  flutter: ">=1.9.1 <2.0.0"

@@ -1,5 +1,4 @@
 import 'package:blog_frontend/model/post.dart';
-import 'package:blog_frontend/repository/entity/repositoryUserEntity.dart';
 import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
 
 class UserPostsBlocEvent {}

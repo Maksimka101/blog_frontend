@@ -1,8 +1,6 @@
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
-import 'package:blog_frontend/model/contants.dart';
 import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
-import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
 import 'package:blog_frontend/ui/widgets/common/userTile.dart';
 import 'package:flutter/material.dart';
 

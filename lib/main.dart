@@ -23,15 +23,12 @@ class SetupBlocProvider extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: MyApp(),
         theme: ThemeData(
-//            primaryColorLight: const Color.fromARGB(255, 120, 0, 80),
             primaryColorLight: Colors.deepPurple,
             primaryColorDark: Colors.deepPurple,
-//            buttonColor: Colors.pink[800],
             buttonColor: Colors.deepPurple[400],
             primaryColor: Colors.deepPurple,
             appBarTheme: AppBarTheme(
-//              color: const Color.fromARGB(255, 120, 0, 80),
-                color: Colors.teal[600])),
+                color: Colors.deepPurple)),
       ),
       blocs: [
         Bloc((inject) => AuthBloc()),
@@ -77,6 +74,6 @@ class MyApp extends StatelessWidget {
 class TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LoadScreen();
+    return SignInScreen();
   }
 }
