@@ -4,8 +4,10 @@ import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/contants.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/ui/widgets/common/loadingWidget.dart';
+import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
 import 'package:blog_frontend/ui/widgets/newsScreen/newsScreenPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class NewsFeedScreen extends StatefulWidget {
   @override
@@ -31,7 +33,10 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
   }
 
   void _showAlertDialog(String message) =>
-      showDialog(context: context, child: Text(message));
+      showDialog(context: context, child: AlertDialog(
+        title: Text('Что то пошло не так'),
+        content: Text(message),
+      ));
 
   @override
   void initState() {
@@ -50,28 +55,39 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
         if (postsSnapshot.hasData) {
           final usersAndPosts =
               (postsSnapshot.data as UiEventSmallUsersAndPosts).posts;
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SizedBox(
-                  height:
-                      MediaQuery.of(context).size.height - toolAndAppBarHeight,
-                  child: PageView.builder(
-                    controller: _pageViewController,
-                    itemCount: usersAndPosts.length,
-                    itemBuilder: (context, i) {
-                      return NewsScreenPage(
-                        usersAndPosts: usersAndPosts,
-                        feedBloc: _feedBloc,
-                        index: i,
-                      );
-                    },
-                  ),
-                )
-              ],
-            ),
-          );
+          if (usersAndPosts.isNotEmpty)
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height -
+                        toolAndAppBarHeight,
+                    child: PageView.builder(
+                      controller: _pageViewController,
+                      itemCount: usersAndPosts.length,
+                      itemBuilder: (context, i) {
+                        return NewsScreenPage(
+                          usersAndPosts: usersAndPosts,
+                          feedBloc: _feedBloc,
+                          index: i,
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            );
+          else
+            return Center(
+              child: RoundedCard(
+                padding: EdgeInsets.symmetric(horizontal: 40),
+                margin: EdgeInsets.all(8),
+                child: Text('Вы ни на кого не подписаны. Для того, чтобы '
+                    'исправить эту ситуацию перейдите на экран поиска.\n'
+                    '(Он третий по счету)', style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+              ),
+            );
         } else
           return LoadingWidget();
       },

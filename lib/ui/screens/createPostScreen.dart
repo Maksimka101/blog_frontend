@@ -1,6 +1,9 @@
+import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 import 'package:flutter/material.dart';
 
-class CreateNewPostScreen extends StatelessWidget {
+class CreatePostScreen extends StatelessWidget {
+  CreatePostScreen({this.previousPost});
+  final UiPostEntity previousPost;
   @override
   Widget build(BuildContext context) {
     return Container();

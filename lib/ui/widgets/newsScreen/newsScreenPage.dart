@@ -2,10 +2,11 @@ import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
 import 'package:blog_frontend/ui/widgets/common/newsPage.dart';
+import 'package:blog_frontend/ui/widgets/common/newsToolCard.dart';
 import 'package:blog_frontend/ui/widgets/common/userTile.dart';
 import 'package:flutter/material.dart';
 
-import 'expandedUserCard.dart';
+import 'expandedUserTile.dart';
 
 class NewsScreenPage extends StatelessWidget {
   NewsScreenPage({this.feedBloc, this.usersAndPosts, this.index});
@@ -30,7 +31,7 @@ class NewsScreenPage extends StatelessWidget {
                 opacity: 0.0,
               ),
               NewsPage(
-                usersAndPosts: usersAndPosts,
+                post: usersAndPosts[index].post,
                 index: index,
                 scrollPosition: feedBloc.scrollPosition,
                 createComment: (message, postId) {
@@ -46,10 +47,14 @@ class NewsScreenPage extends StatelessWidget {
               vertical: 12,
               horizontal: 0,
             ),
-            child: ExpandedUserCard(
-              currentUserIndex: index,
-              newsBloc: feedBloc,
-              users: usersAndPosts,
+            child: NewsToolCard(
+              index: index,
+              scrollPosition: feedBloc.scrollPosition,
+              child: ExpandedUserTile(
+                currentUserIndex: index,
+                newsBloc: feedBloc,
+                users: usersAndPosts,
+              ),
             ),
           ),
         ],

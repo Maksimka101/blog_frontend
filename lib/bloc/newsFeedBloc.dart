@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/comment.dart';
@@ -8,8 +9,11 @@ import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/repository/entity/repositoryUserEntity.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'mainAppScreenBloc.dart';
+
 class NewsFeedBloc extends BlocBase {
   NewsFeedBloc() {
+    BlocProvider.getBloc<MainAppScreenBloc>().page.listen(_listenForPages);
     _postEvents.stream.listen(_listenPostEvent);
   }
 
@@ -27,20 +31,30 @@ class NewsFeedBloc extends BlocBase {
     }
   }
 
+  void _listenForPages(int pageIndex) {
+    if (pageIndex == 0)
+      _loadUserSubscriptions(
+          EventLoadPosts(userName: _userName));
+  }
+
   void _filterUsers(EventFilterUsers event) {
     if (event.showAllUsers)
-      _uiDataPostEvent.add(UiEventSmallUsersAndPosts(posts: RepositoryUserEntity.convertForUiAndSort(_previousPosts)));
+      _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
+          posts: RepositoryUserEntity.convertForUiAndSort(_previousPosts)));
     else {
       _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
-          posts: RepositoryUserEntity.convertForUiAndSort(_previousPosts)..removeWhere((user) => user.userName != event.userName)));
+          posts: RepositoryUserEntity.convertForUiAndSort(_previousPosts)
+            ..removeWhere((user) => user.userName != event.userName)));
     }
   }
 
   void _loadUserSubscriptions(EventLoadPosts event) {
-    BackendRepository.getAllUserSubscription(event.userName).then((usersResponse) {
+    BackendRepository.getAllUserSubscription(event.userName)
+        .then((usersResponse) {
       if (usersResponse.status == Status.Ok) {
         _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
-            posts: RepositoryUserEntity.convertForUiAndSort(usersResponse.typedBody.list)));
+            posts: RepositoryUserEntity.convertForUiAndSort(
+                usersResponse.typedBody.list)));
         _previousPosts = usersResponse.typedBody.list;
       } else {
         _uiPostEvent.add(UiEventError(
@@ -52,12 +66,21 @@ class NewsFeedBloc extends BlocBase {
 
   void _createComment(EventCreateComment event) {
     final comment = Comment(
-      content: event.message,
-      postId: event.postId,
-      authorId: InternalRepositoryUser.instance.name
-    );
-    BackendRepository.createComment(comment);
+        content: event.message,
+        postId: event.postId,
+        authorId: _userName);
+    BackendRepository.createComment(comment).then((response) {
+      if (response.status != Status.Ok) {
+        _uiPostEvent.sink.add(UiEventError(
+            message:
+                'Не удалось создать пост. Проверьте подключение к интернету.'));
+        _loadUserSubscriptions(
+            EventLoadPosts(userName: _userName));
+      }
+    });
   }
+
+  final _userName = InternalRepositoryUser.instance.name;
 
   List<RepositoryUserEntity> _previousPosts;
 
@@ -69,7 +92,6 @@ class NewsFeedBloc extends BlocBase {
 
   final _postEvents = PublishSubject<PostEvent>();
 
-//  Stream<PostEvent> get postEvent => _postEvents.stream;
   StreamSink<PostEvent> get addPostEvent => _postEvents.sink;
 
   final _uiPostEvent = PublishSubject<UiPostEvent>();

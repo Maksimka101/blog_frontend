@@ -1,6 +1,6 @@
 import 'package:blog_frontend/model/comment.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
-import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
+import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 import 'package:blog_frontend/ui/widgets/newsScreen/newsCard.dart';
 import 'package:flutter/material.dart';
 
@@ -9,13 +9,13 @@ import 'commentsWidget.dart';
 class NewsPage extends StatefulWidget {
   NewsPage(
       {@required this.index,
-      @required this.usersAndPosts,
+      @required this.post,
       @required this.createComment,
       @required this.scrollPosition});
 
   final Stream<double> scrollPosition;
   final int index;
-  final List<UiUserEntity> usersAndPosts;
+  final UiPostEntity post;
   final void Function(String message, int postId) createComment;
 
   @override
@@ -31,18 +31,18 @@ class _NewsPageState extends State<NewsPage> {
       children: <Widget>[
         NewsScreenNewsCard(
           scrollPosition: widget.scrollPosition,
-          post: widget.usersAndPosts[widget.index].post,
+          post: widget.post,
           currentPostIndex: widget.index,
           onExpanded: (expanded) => setState(() => _isExpanded = expanded),
         ),
         if (_isExpanded)
           CommentsWidget(
-              comments: widget.usersAndPosts[widget.index].post.comments,
+              comments: widget.post.comments,
               onSend: (message) => setState(() {
                     widget.createComment(
-                        message, widget.usersAndPosts[widget.index].post.id);
+                        message, widget.post.id);
                     // сделано через одно место
-                    widget.usersAndPosts[widget.index].post.comments
+                    widget.post.comments
                         .add(Comment(
                       authorId: InternalRepositoryUser.instance.name,
                       content: message,

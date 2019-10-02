@@ -22,13 +22,19 @@ class RepositoryUserEntity implements Serializable {
   }
 
   static List<UiUserEntity> convertForUiAndSort(
-          List<RepositoryUserEntity> users) =>
-      users
-          .map((user) => user.posts
-              .map((post) => UiUserEntity(
-                  userName: user.name, post: post, userImageUrl: user.imageUrl))
-              .toList())
-          .reduce((list, elem) => list..addAll(elem))
-            ..sort((user1, user2) =>
-                -user1.post.createDate.compareTo(user2.post.createDate));
+          List<RepositoryUserEntity> users) {
+    if (users.isNotEmpty)
+    return users
+        .map((user) =>
+        user.posts
+            .map((post) =>
+            UiUserEntity(
+                userName: user.name, post: post, userImageUrl: user.imageUrl))
+            .toList())
+        .reduce((list, elem) => list..addAll(elem))
+      ..sort((user1, user2) =>
+      -user1.post.createDate.compareTo(user2.post.createDate));
+    else
+      return <UiUserEntity>[];
+  }
 }

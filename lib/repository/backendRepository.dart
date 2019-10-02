@@ -50,8 +50,12 @@ class BackendRepository {
     try {
       final backendResponse =
           await http.get("$BACKEND_URL/blog/user/get/$uuid");
-      final decodedResponse = jsonDecode(backendResponse.body);
-      response = Response<User>.fromJson(decodedResponse, typedBody: User());
+      if (backendResponse.statusCode != 200) {
+        response = Response<User>(status: Status.Error);
+      } else {
+        final decodedResponse = jsonDecode(backendResponse.body);
+        response = Response<User>.fromJson(decodedResponse, typedBody: User());
+      }
     } catch (e) {
       print(e);
       response = Response<User>(status: Status.Error);
@@ -86,7 +90,6 @@ class BackendRepository {
           .map((_) => RepositoryUserEntity())
           .cast<RepositoryUserEntity>()
           .toList();
-      print('dslkjf');
       response = Response<SerializableList<RepositoryUserEntity>>.fromJson(
           decodedResponse,
           typedBody:
@@ -135,13 +138,17 @@ class BackendRepository {
     try {
       final request =
           await http.get('$BACKEND_URL/blog/user/find_by_name/$name');
-      final decodedRequest = jsonDecode(request.body);
-      response = Response<SerializableList<User>>.fromJson(decodedRequest,
-          typedBody: SerializableList(
-              list: decodedRequest['body']
-                  .map((_) => User())
-                  .cast<User>()
-                  .toList()));
+      if (request.statusCode != 200)
+        response = Response<SerializableList<User>>(status: Status.Error);
+      else {
+        final decodedRequest = jsonDecode(request.body);
+        response = Response<SerializableList<User>>.fromJson(decodedRequest,
+            typedBody: SerializableList(
+                list: decodedRequest['body']
+                    .map((_) => User())
+                    .cast<User>()
+                    .toList()));
+      }
     } catch (e) {
       print(e);
       response = Response<SerializableList<User>>(status: Status.Error);
@@ -165,7 +172,7 @@ class BackendRepository {
     return response;
   }
 
-  static Future<Response> deletePost(String postId) async {
+  static Future<Response> deletePost(int postId) async {
     Response response;
     try {
       final request = await http.delete(
@@ -185,7 +192,11 @@ class BackendRepository {
     try {
       final request = await http.post('$BACKEND_URL/blog/user/comment/create',
           headers: _headers(), body: jsonEncode(comment.toJson()));
-      response = Response.fromJson(jsonDecode(request.body), typedBody: null);
+
+      if (request.statusCode != 200)
+        response = Response(status: Status.Error);
+      else
+        response = Response.fromJson(jsonDecode(request.body), typedBody: null);
     } catch (e) {
       print(e);
       response = Response(

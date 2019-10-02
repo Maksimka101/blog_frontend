@@ -27,6 +27,8 @@ class UiEventPosts extends UserPostsBlocUiEvent {
   final List<UiUserEntity> users;
 }
 
+class UiEventUserIsNotAuthenticated extends UserPostsBlocUiEvent {}
+
 class UiEventError extends UserPostsBlocUiEvent {
   UiEventError({this.message});
   final String message;

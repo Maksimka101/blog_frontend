@@ -11,25 +11,28 @@ import 'package:rxdart/rxdart.dart';
 
 class AuthBloc extends BlocBase {
   AuthBloc() {
-    _internalRepository.loadClient().then((_) {
-      var user = _internalRepository.user;
+    _initLoad();
+
+    _authEventsStream.listen(_listenEvents);
+  }
+
+  void _initLoad() {
+    _internalRepository.loadUser().then((_) {
+      var user = InternalRepositoryUser.instance;
       if (user.isNotFirstLogin) {
         if (!user.isAnonymous)
           BackendRepository.getUser(user.name).then((response) {
             if (response.status == Status.Ok) {
               _uiEventsStream.add(UiEventUserIsAuthenticated());
-            } else
-              _uiEventsStream.add(UiEventAuthenticateError(
-                  'Ошибка при загрузке данных с сервера, попробуйте '
-                      'перезайти в аккаунт и проверьте подключение к интернету'));
+            } else {
+              _uiEventsStream.add(UiEventNeedRegister());
+            }
           });
         else
           _uiEventsStream.add(UiEventUserIsAuthenticated());
       } else
         _uiEventsStream.add(UiEventNeedRegister());
     });
-
-    _authEventsStream.listen(_listenEvents);
   }
 
   final _internalRepository = InternalRepository();

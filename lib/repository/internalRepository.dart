@@ -2,13 +2,10 @@ import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class InternalRepository {
-  // client mean user
-  // i just don't know how to name it
-  InternalRepositoryUser get user => InternalRepositoryUser.instance;
   set user(InternalRepositoryUser user) => _updateClient(user);
   final storage = FlutterSecureStorage();
 
-  Future<void> loadClient() async {
+  Future<void> loadUser() async {
     final anon = await storage.read(key: 'anonymous');
     InternalRepositoryUser(
         isAnonymous: anon == 'true',
