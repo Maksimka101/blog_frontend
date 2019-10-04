@@ -1,5 +1,6 @@
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
+import 'package:blog_frontend/model/user.dart';
 import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
 import 'package:blog_frontend/ui/widgets/common/newsPage.dart';
 import 'package:blog_frontend/ui/widgets/common/newsToolCard.dart';
@@ -9,9 +10,11 @@ import 'package:flutter/material.dart';
 import 'expandedUserTile.dart';
 
 class NewsScreenPage extends StatelessWidget {
-  NewsScreenPage({this.feedBloc, this.usersAndPosts, this.index});
+  NewsScreenPage(
+      {this.feedBloc, this.usersAndPosts, this.index, this.usersForToolCard});
 
   final NewsFeedBloc feedBloc;
+  final List<User> usersForToolCard;
   final List<UiUserEntity> usersAndPosts;
   final int index;
 
@@ -50,9 +53,10 @@ class NewsScreenPage extends StatelessWidget {
               index: index,
               scrollPosition: feedBloc.scrollPosition,
               child: ExpandedUserTile(
+                allUsers: usersAndPosts,
                 currentUserIndex: index,
                 newsBloc: feedBloc,
-                users: usersAndPosts,
+                users: usersForToolCard,
               ),
             ),
           ),

@@ -1,9 +1,9 @@
+import 'package:blog_frontend/model/user.dart';
 import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 
 class UiUserEntity {
-  UiUserEntity({this.post, this.userName, this.userImageUrl});
+  UiUserEntity({this.post, this.user});
 
-  final String userName;
-  final String userImageUrl;
+  final User user;
   final UiPostEntity post;
 }

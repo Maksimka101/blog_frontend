@@ -2,7 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/authBloc.dart';
 import 'package:blog_frontend/bloc/loginBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
-import 'package:blog_frontend/ui/screens/introductionLoginScreen.dart';
+import 'package:blog_frontend/ui/screens/signin/introductionLoginScreen.dart';
 import 'package:blog_frontend/ui/screens/signin/authorizationScreen.dart';
 import 'package:blog_frontend/ui/screens/signin/loginScreen.dart';
 import 'package:blog_frontend/ui/widgets/common/offsetAppbar.dart';

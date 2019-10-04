@@ -56,7 +56,6 @@ class _NewsToolCardState extends State<NewsToolCard>
 
   @override
   void dispose() {
-    print('dispose');
     _isDisposed = true;
     super.dispose();
   }

@@ -28,7 +28,9 @@ class AuthenticateEvent extends LoginEvent {
 class SignInAnonymousEvent extends LoginEvent {}
 
 /// Don't user it! It is class for extends
-class UiEventLogin {}
+abstract class UiEventLogin {}
+
+class UiEventLoading extends UiEventLogin {}
 
 class UiEventNeedRegister extends UiEventLogin {}
 

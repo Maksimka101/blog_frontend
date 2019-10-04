@@ -65,6 +65,7 @@ class UserPostsBloc extends BlocBase {
 
   void _createComment(EventCreateComment event) async {
     if (await _isNotConnected()) return;
+    if (event.content.trim().isEmpty) return;
     BackendRepository.createComment(Comment(
             authorId: _userName,
             authorImageUrl: InternalRepositoryUser.instance.imageUrl,

@@ -26,6 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
       case UiEventLoginError:
         showAlertDialog(context, (event as UiEventLoginError).errorMessage);
         break;
+      case UiEventLoading:
+        _showSnackBar('Обработка данных. Это может занять много времени.');
+        break;
     }
   }
 
@@ -34,6 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
     _registerEvent.userAvatar = image;
     setState(() {});
   }
+
+  void _showSnackBar(String message) =>
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 50),
+      ));
 
   @override
   void initState() {
@@ -53,7 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
               InkWell(
                 child: CircleAvatar(
                   radius: 90,
-                  backgroundImage: _registerEvent.userAvatar != null ? FileImage(_registerEvent.userAvatar) : null,
+                  backgroundImage: _registerEvent.userAvatar != null
+                      ? FileImage(_registerEvent.userAvatar)
+                      : null,
                   child: _registerEvent.userAvatar == null
                       ? Text(
                           "Нажмите, чтобы выбрать фото",

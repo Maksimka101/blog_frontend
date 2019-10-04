@@ -50,12 +50,18 @@ class CreatePostBloc extends BlocBase {
   void _createPost(EventCreatePost event) async {
     if (await _isNotConnected()) return;
     _uiPostEvents.add(UiEventLoading());
-    final imageUrl = await FirebaseRepository.saveImage(event.image);
+    String imageUrl;
+    if (event.imageUrl == null)
+      imageUrl = await FirebaseRepository.saveImage(event.image);
+    else
+      imageUrl = event.imageUrl;
     BackendRepository.createPost(Post(
+            id: event.id,
             content: event.content,
             authorId: InternalRepositoryUser.instance.name,
             title: event.title,
-            imageUrl: imageUrl))
+            imageUrl: imageUrl,
+    createDate: event.date))
         .then((response) {
       if (response.status == Status.Ok) {
         BlocProvider.getBloc<UserPostsBloc>().events.add(

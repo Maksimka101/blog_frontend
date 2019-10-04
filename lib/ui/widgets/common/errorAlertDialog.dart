@@ -4,7 +4,7 @@ void showAlertDialog(BuildContext context, String message) => showDialog(
     context: context,
     builder: (context) => AlertDialog(
           title: Text('Что то пошло не так'),
-          content: Text(message),
+          content: Text(message??''),
           actions: <Widget>[
             MaterialButton(
               onPressed: () => Navigator.of(context).pop(),

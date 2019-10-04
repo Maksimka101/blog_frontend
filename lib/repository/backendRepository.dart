@@ -29,6 +29,7 @@ class BackendRepository {
 
   static Map<String, String> _headers() => {
         'password': InternalRepositoryUser.instance.password,
+        'Content-Type': 'application/json'
       };
 
   static Future<Response> registerUser(User user, String userPassword) async {
@@ -96,6 +97,7 @@ class BackendRepository {
               SerializableList<RepositoryUserEntity>(list: listForDecode));
     } catch (e) {
       print('exeptinon while load user with subscriptions');
+      print(e);
       response = Response<SerializableList<RepositoryUserEntity>>(
           status: Status.Error);
     }

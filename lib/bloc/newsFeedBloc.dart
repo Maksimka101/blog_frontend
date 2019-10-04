@@ -4,6 +4,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/comment.dart';
 import 'package:blog_frontend/model/response.dart';
+import 'package:blog_frontend/model/user.dart';
 import 'package:blog_frontend/repository/backendRepository.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/repository/entity/repositoryUserEntity.dart';
@@ -34,18 +35,24 @@ class NewsFeedBloc extends BlocBase {
 
   void _listenForPages(int pageIndex) {
     if (pageIndex == 0)
-      _loadUserSubscriptions(
-          EventLoadPosts(userName: _userName));
+      _loadUserSubscriptions(EventLoadPosts(userName: _userName));
   }
 
   void _filterUsers(EventFilterUsers event) {
     if (event.showAllUsers)
       _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
+          users: _previousPosts.map((user) => user.user).toList(),
           posts: RepositoryUserEntity.convertForUiAndSort(_previousPosts)));
     else {
       _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
+          users: <User>[
+            _previousPosts
+                .reduce((user1, user2) =>
+                    user1.user.name == event.userName ? user1 : user2)
+                .user
+          ],
           posts: RepositoryUserEntity.convertForUiAndSort(_previousPosts)
-            ..removeWhere((user) => user.userName != event.userName)));
+            ..removeWhere((user) => user.user.name != event.userName)));
     }
   }
 
@@ -55,6 +62,8 @@ class NewsFeedBloc extends BlocBase {
         .then((usersResponse) {
       if (usersResponse.status == Status.Ok) {
         _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
+            users:
+                usersResponse.typedBody.list.map((user) => user.user).toList(),
             posts: RepositoryUserEntity.convertForUiAndSort(
                 usersResponse.typedBody.list)));
         _previousPosts = usersResponse.typedBody.list;
@@ -67,18 +76,15 @@ class NewsFeedBloc extends BlocBase {
   }
 
   void _createComment(EventCreateComment event) async {
+    if (event.message.trim().isEmpty) return;
     if (await _isNotConnected()) return;
     final comment = Comment(
-        content: event.message,
-        postId: event.postId,
-        authorId: _userName);
+        content: event.message, postId: event.postId, authorId: _userName);
     BackendRepository.createComment(comment).then((response) {
       if (response.status != Status.Ok) {
-        _uiPostEvent.sink.add(UiEventError(
-            message:
-                'Не удалось создать пост.'));
-        _loadUserSubscriptions(
-            EventLoadPosts(userName: _userName));
+        _uiPostEvent.sink
+            .add(UiEventError(message: 'Не удалось создать пост.'));
+        _loadUserSubscriptions(EventLoadPosts(userName: _userName));
       }
     });
   }
@@ -87,7 +93,8 @@ class NewsFeedBloc extends BlocBase {
     if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
       _uiPostEvent.add(UiEventError(message: 'Нет подключения к интернету.'));
       return true;
-    } else return false;
+    } else
+      return false;
   }
 
   final _userName = InternalRepositoryUser.instance.name;

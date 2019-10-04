@@ -16,6 +16,7 @@ class CommentTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             if (imageUrl != null)
@@ -32,23 +33,25 @@ class CommentTile extends StatelessWidget {
                         fontWeight: FontWeight.w500),
                   )),
             SizedBox(width: 10),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  startToUpper(authorName),
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[700]),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  content,
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ],
+            Flexible(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    startToUpper(authorName),
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[700]),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    content,
+                    style: TextStyle(fontWeight: FontWeight.w500,),
+                  ),
+                ],
+              ),
             )
           ],
         ),

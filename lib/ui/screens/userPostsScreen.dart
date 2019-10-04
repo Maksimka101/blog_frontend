@@ -5,7 +5,7 @@ import 'package:blog_frontend/bloc/userPostsBloc.dart';
 import 'package:blog_frontend/events/userPostEvents.dart';
 import 'package:blog_frontend/model/contants.dart';
 import 'package:blog_frontend/ui/screens/createPostScreen.dart';
-import 'package:blog_frontend/ui/screens/introductionLoginScreen.dart';
+import 'package:blog_frontend/ui/screens/signin/introductionLoginScreen.dart';
 import 'package:blog_frontend/ui/widgets/common/loadingWidget.dart';
 import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
 import 'package:blog_frontend/ui/widgets/userPostsScreen/userPostsScreenPage.dart';

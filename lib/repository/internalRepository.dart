@@ -18,6 +18,6 @@ class InternalRepository {
     storage.write(key: 'password', value: repositoryUser.password);
     storage.write(key: 'uuid', value: repositoryUser.name);
     storage.write(key: 'anonymous', value: repositoryUser.isAnonymous.toString());
-    storage.write(key: 'imageUrl', value: repositoryUser.imageUrl);
+    storage.write(key: 'imageUrl', value: repositoryUser.imageUrl??'');
   }
 }

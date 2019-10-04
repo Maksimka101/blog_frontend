@@ -1,3 +1,4 @@
+import 'package:blog_frontend/model/user.dart';
 import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
 import 'package:flutter/material.dart';
 
@@ -26,8 +27,9 @@ class EventCommentPost extends PostEvent {}
 class UiDataPostEvent {}
 
 class UiEventSmallUsersAndPosts extends UiDataPostEvent {
-  UiEventSmallUsersAndPosts({@required this.posts});
+  UiEventSmallUsersAndPosts({@required this.posts, @required this.users});
   final List<UiUserEntity> posts;
+  final List<User> users;
 }
 
 

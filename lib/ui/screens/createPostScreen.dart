@@ -9,6 +9,7 @@ import 'package:blog_frontend/ui/widgets/common/offsetAppbar.dart';
 import 'package:blog_frontend/ui/widgets/common/offsetTabBar.dart';
 import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
 import 'package:blog_frontend/utils/validators.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,8 +31,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   void initState() {
-    _bloc.errorEvents.listen((error) => showAlertDialog(context, error.errorMessage));
+    _bloc.errorEvents
+        .listen((error) => showAlertDialog(context, error.errorMessage));
     _bloc.uiEvents.listen(_listenUiEvents);
+    if (widget.previousPost != null) {
+      _eventCreatePost.title = widget.previousPost.title;
+      _eventCreatePost.content = widget.previousPost.content;
+      _eventCreatePost.id = widget.previousPost.id;
+      _eventCreatePost.imageUrl = widget.previousPost.imageUrl;
+      _eventCreatePost.date = widget.previousPost.createDate;
+    }
     super.initState();
   }
 
@@ -40,7 +49,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       Navigator.pop(context);
     else if (event.runtimeType == UiEventLoading)
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('Обработка данных, подожните немного.'),
+        content: Text('Обработка данных, это может занять много времени.'),
+        duration: Duration(seconds: 50),
       ));
   }
 
@@ -138,15 +148,11 @@ class _CreatePostBody extends StatefulWidget {
       @required this.validator,
       @required this.eventCreatePost,
       @required this.uiEvents,
-      this.content = '',
-      this.title = '',
       File image}) {
     if (eventCreatePost.image == null) eventCreatePost.image = image;
   }
 
   final Stream<CreatePostUiEvent> uiEvents;
-  final String title;
-  final String content;
   final CreatePostValidator validator;
   final GlobalKey<FormState> formController;
   final EventCreatePost eventCreatePost;
@@ -159,6 +165,7 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
   void _pickImage() async {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
     widget.eventCreatePost.image = image;
+    widget.eventCreatePost.imageUrl = null;
     setState(() {});
   }
 
@@ -182,7 +189,7 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                     textCapitalization: TextCapitalization.sentences,
                     maxLines: 3,
                     minLines: 1,
-                    initialValue: widget.title,
+                    initialValue: widget.eventCreatePost.title ?? '',
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         disabledBorder: InputBorder.none,
@@ -200,7 +207,7 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextFormField(
-                        initialValue: widget.content,
+                        initialValue: widget.eventCreatePost.content ?? '',
                         validator: widget.validator.contentValidator,
                         minLines: 15,
                         textCapitalization: TextCapitalization.sentences,
@@ -243,6 +250,19 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                       ],
                     ),
                   ),
+                if (widget.eventCreatePost.imageUrl != null)
+                  RoundedCard(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+                    child: Column(
+                      children: <Widget>[
+                        ClipRRect(
+                          child: CachedNetworkImage(
+                              imageUrl: widget.eventCreatePost.imageUrl),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
@@ -260,7 +280,7 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.8 -
                             kBottomNavigationBarHeight,
@@ -269,6 +289,7 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                           isExpanded: false,
                           content: event.content,
                           commentsCount: 0,
+                          imageUrl: event.imageUrl,
                           image: event.image,
                         ),
                       ),

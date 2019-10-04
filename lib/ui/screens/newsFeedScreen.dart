@@ -50,6 +50,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
         if (postsSnapshot.hasData) {
           final usersAndPosts =
               (postsSnapshot.data as UiEventSmallUsersAndPosts).posts;
+          final users = (postsSnapshot.data as UiEventSmallUsersAndPosts).users;
           if (usersAndPosts.isNotEmpty)
             return SingleChildScrollView(
               child: Column(
@@ -66,6 +67,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                           usersAndPosts: usersAndPosts,
                           feedBloc: _feedBloc,
                           index: i,
+                          usersForToolCard: users,
                         );
                       },
                     ),
@@ -78,9 +80,13 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
               child: RoundedCard(
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 margin: EdgeInsets.all(8),
-                child: Text('Вы ни на кого не подписаны. Для того, чтобы '
-                    'исправить эту ситуацию перейдите на экран поиска.\n'
-                    '(Он третий по счету)', style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                child: Text(
+                  'Вы ни на кого не подписаны. Для того, чтобы '
+                  'исправить эту ситуацию перейдите на экран поиска.\n'
+                  '(Он третий по счету)',
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
               ),
             );
         } else

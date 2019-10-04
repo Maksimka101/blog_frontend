@@ -34,7 +34,11 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                   Expanded(
                     child: TextField(
                       controller: _textEditController,
+                      minLines: 1,
+                      maxLines: 3,
+                      textCapitalization: TextCapitalization.sentences,
                       decoration: InputDecoration(
+                        focusedBorder: InputBorder.none,
                         hintText: 'Ваш комментарий',
                         enabledBorder: InputBorder.none,
                       ),
