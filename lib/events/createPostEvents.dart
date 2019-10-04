@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'dart:math';
-
 abstract class CreatePostEvent {}
 
 class EventCreatePost extends CreatePostEvent {
