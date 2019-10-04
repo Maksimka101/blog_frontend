@@ -18,6 +18,12 @@ class EventCreatePost extends UserPostsBlocEvent {
   final Post post;
 }
 
+class EventCreateComment extends UserPostsBlocEvent {
+  EventCreateComment({this.content, this.postId});
+  final int postId;
+  final String content;
+}
+
 
 class UserPostsBlocUiEvent {}
 
@@ -28,7 +34,7 @@ class UiEventPosts extends UserPostsBlocUiEvent {
 
 class UiEventUserIsNotAuthenticated extends UserPostsBlocUiEvent {}
 
-class UiEventError extends UserPostsBlocUiEvent {
+class UiEventError {
   UiEventError({this.message});
   final String message;
 }

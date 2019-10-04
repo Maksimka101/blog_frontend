@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/model/response.dart';
@@ -7,6 +8,7 @@ import 'package:blog_frontend/repository/backendRepository.dart';
 import 'package:blog_frontend/repository/internalRepository.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/repository/firebaseRepository.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthBloc extends BlocBase {
@@ -17,8 +19,13 @@ class AuthBloc extends BlocBase {
   }
 
   void _initLoad() {
-    _internalRepository.loadUser().then((_) {
+    _internalRepository.loadUser().then((_) async {
       var user = InternalRepositoryUser.instance;
+      if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+        _uiEventsStream.add(
+            UiEventLoadAuthorizedUserError('Нет подключения к интернету.'));
+        return;
+      }
       if (user.isNotFirstLogin) {
         if (!user.isAnonymous)
           BackendRepository.getUser(user.name).then((response) {
@@ -71,7 +78,12 @@ class AuthBloc extends BlocBase {
     _uiEventsStream.add(UiEventUserIsAuthenticated());
   }
 
-  void _authenticateUserByPassword(AuthenticateEvent authEvent) {
+  void _authenticateUserByPassword(AuthenticateEvent authEvent) async {
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+      _uiEventsStream
+          .add(UiEventAuthenticateError('Нет подключения к интернету.'));
+      return;
+    }
     BackendRepository.getUser(authEvent.userName).then((response) {
       if (response.status == Status.Ok) {
         _internalRepository.user = InternalRepositoryUser(
@@ -84,29 +96,33 @@ class AuthBloc extends BlocBase {
         print(response.body);
         _uiEventsStream.add(UiEventAuthenticateError(
             'Ошибка на сервере. Возможно вы ввели не верные данные, '
-                'еще не зарегестрировались или у вас нет интернета.'));
+            'еще не зарегестрировались.'));
       }
     });
   }
 
-  void _registerWithPassword(RegisterEvent registerEvent) {
-    final imageUrl = FirebaseRepository.saveUserImage(registerEvent.userAvatar);
-    final cacheUser = InternalRepositoryUser(
-        imageUrl: imageUrl,
-        isAnonymous: false,
-        password: registerEvent.userPassword,
-        name: registerEvent.userName);
-    _internalRepository.user = cacheUser;
-    final user = User(
-        name: registerEvent.userName,
-        imageUrl: imageUrl);
-    BackendRepository.registerUser(user).then((resp) {
-      if (resp.status != Status.Ok)
-        _uiEventsStream.add(UiEventLoginError('Ошибка при регистрации. '
-            'Попробуйте выбрать другое имя или проверьте подключение к интернету.'));
-      else
-        _uiEventsStream.add(UiEventUserIsAuthenticated());
-    });
+  void _registerWithPassword(RegisterEvent registerEvent) async {
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+      _uiEventsStream.add(UiEventLoginError('Нет подключения к интернету.'));
+      return;
+    }
+    final imageUrl =
+        await FirebaseRepository.saveImage(registerEvent.userAvatar);
+    final user = User(name: registerEvent.userName, imageUrl: imageUrl);
+    final resp =
+        await BackendRepository.registerUser(user, registerEvent.userPassword);
+    if (resp.status != Status.Ok)
+      _uiEventsStream.add(UiEventLoginError('Ошибка при регистрации. '
+          'Попробуйте выбрать другое имя.'));
+    else {
+      final internalUser = InternalRepositoryUser(
+          imageUrl: imageUrl,
+          isAnonymous: false,
+          password: registerEvent.userPassword,
+          name: registerEvent.userName);
+      InternalRepository().user = internalUser;
+      _uiEventsStream.add(UiEventUserIsAuthenticated());
+    }
   }
 
   @override

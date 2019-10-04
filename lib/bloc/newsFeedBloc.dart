@@ -7,6 +7,7 @@ import 'package:blog_frontend/model/response.dart';
 import 'package:blog_frontend/repository/backendRepository.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/repository/entity/repositoryUserEntity.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'mainAppScreenBloc.dart';
@@ -48,7 +49,8 @@ class NewsFeedBloc extends BlocBase {
     }
   }
 
-  void _loadUserSubscriptions(EventLoadPosts event) {
+  void _loadUserSubscriptions(EventLoadPosts event) async {
+    if (await _isNotConnected()) return;
     BackendRepository.getAllUserSubscription(event.userName)
         .then((usersResponse) {
       if (usersResponse.status == Status.Ok) {
@@ -64,7 +66,8 @@ class NewsFeedBloc extends BlocBase {
     });
   }
 
-  void _createComment(EventCreateComment event) {
+  void _createComment(EventCreateComment event) async {
+    if (await _isNotConnected()) return;
     final comment = Comment(
         content: event.message,
         postId: event.postId,
@@ -73,11 +76,18 @@ class NewsFeedBloc extends BlocBase {
       if (response.status != Status.Ok) {
         _uiPostEvent.sink.add(UiEventError(
             message:
-                'Не удалось создать пост. Проверьте подключение к интернету.'));
+                'Не удалось создать пост.'));
         _loadUserSubscriptions(
             EventLoadPosts(userName: _userName));
       }
     });
+  }
+
+  Future<bool> _isNotConnected() async {
+    if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+      _uiPostEvent.add(UiEventError(message: 'Нет подключения к интернету.'));
+      return true;
+    } else return false;
   }
 
   final _userName = InternalRepositoryUser.instance.name;

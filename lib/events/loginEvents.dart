@@ -39,6 +39,11 @@ class UiEventAuthenticateError extends UiEventLogin {
   final String errorMessage;
 }
 
+class UiEventLoadAuthorizedUserError extends UiEventLogin {
+  UiEventLoadAuthorizedUserError(this.errorMessage);
+  final String errorMessage;
+}
+
 class UiEventLoginError extends UiEventLogin {
   UiEventLoginError(this.errorMessage);
   final String errorMessage;

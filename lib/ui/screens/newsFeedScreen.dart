@@ -3,6 +3,7 @@ import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/contants.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
+import 'package:blog_frontend/ui/widgets/common/errorAlertDialog.dart';
 import 'package:blog_frontend/ui/widgets/common/loadingWidget.dart';
 import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
 import 'package:blog_frontend/ui/widgets/newsScreen/newsScreenPage.dart';
@@ -20,23 +21,17 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
 
   final _pageViewController = PageController(viewportFraction: 0.85);
 
-  void _listenPageViewController() {
-    _feedBloc.updateScrollPosition.add(_pageViewController.page);
-  }
-
   void _listenForError(UiPostEvent eventError) {
     switch (eventError.runtimeType) {
       case UiEventError:
-        _showAlertDialog((eventError as UiEventError).message);
+        showAlertDialog(context, (eventError as UiEventError).message);
         break;
     }
   }
 
-  void _showAlertDialog(String message) =>
-      showDialog(context: context, child: AlertDialog(
-        title: Text('Что то пошло не так'),
-        content: Text(message),
-      ));
+  void _listenPageViewController() {
+    _feedBloc.updateScrollPosition.add(_pageViewController.page);
+  }
 
   @override
   void initState() {

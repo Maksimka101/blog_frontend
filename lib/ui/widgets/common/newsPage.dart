@@ -1,7 +1,7 @@
 import 'package:blog_frontend/model/comment.dart';
 import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
-import 'package:blog_frontend/ui/widgets/newsScreen/newsCard.dart';
+import 'package:blog_frontend/ui/widgets/common/animatedNewsCard.dart';
 import 'package:flutter/material.dart';
 
 import 'commentsWidget.dart';
@@ -29,7 +29,7 @@ class _NewsPageState extends State<NewsPage> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        NewsScreenNewsCard(
+        AnimatedNewsCard(
           scrollPosition: widget.scrollPosition,
           post: widget.post,
           currentPostIndex: widget.index,

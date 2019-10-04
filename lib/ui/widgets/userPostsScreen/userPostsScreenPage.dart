@@ -31,7 +31,8 @@ class UserPostsScreenPage extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        userPostsBloc.events.add(EventDeletePost(postId: post.id));
+                        userPostsBloc.events
+                            .add(EventDeletePost(postId: post.id));
                       },
                     ),
                   ),
@@ -39,9 +40,12 @@ class UserPostsScreenPage extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => CreatePostScreen(previousPost: post,)
-                        ));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreatePostScreen(
+                                      previousPost: post,
+                                    )));
                       },
                     ),
                   ),
@@ -49,9 +53,10 @@ class UserPostsScreenPage extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(Icons.add_circle),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => CreatePostScreen()
-                        ));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreatePostScreen()));
                       },
                     ),
                   )
@@ -66,7 +71,8 @@ class UserPostsScreenPage extends StatelessWidget {
             scrollPosition: userPostsBloc.scrollPosition,
             post: post,
             createComment: (message, postId) {
-
+              userPostsBloc.events
+                  .add(EventCreateComment(postId: postId, content: message));
             },
           )
         ],

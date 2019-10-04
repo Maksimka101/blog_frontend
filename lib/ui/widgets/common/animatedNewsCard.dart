@@ -2,8 +2,8 @@ import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 import 'package:blog_frontend/ui/widgets/common/commonNewsCard.dart';
 import 'package:flutter/material.dart';
 
-class NewsScreenNewsCard extends StatefulWidget {
-  NewsScreenNewsCard(
+class AnimatedNewsCard extends StatefulWidget {
+  AnimatedNewsCard(
       {this.scrollPosition, this.post, this.currentPostIndex, this.onExpanded});
 
   final UiPostEntity post;
@@ -12,10 +12,10 @@ class NewsScreenNewsCard extends StatefulWidget {
   final void Function(bool) onExpanded;
 
   @override
-  _NewsScreenNewsCardState createState() => _NewsScreenNewsCardState();
+  _AnimatedNewsCardState createState() => _AnimatedNewsCardState();
 }
 
-class _NewsScreenNewsCardState extends State<NewsScreenNewsCard>
+class _AnimatedNewsCardState extends State<AnimatedNewsCard>
     with TickerProviderStateMixin {
   var _sizeFactor = 0.0;
   var _isDisposed = false;

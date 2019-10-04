@@ -36,8 +36,7 @@ class NewsScreenPage extends StatelessWidget {
                 scrollPosition: feedBloc.scrollPosition,
                 createComment: (message, postId) {
                   feedBloc.addPostEvent.add(EventCreateComment(
-                      message: message,
-                      postId: usersAndPosts[index].post.id));
+                      message: message, postId: usersAndPosts[index].post.id));
                 },
               )
             ],

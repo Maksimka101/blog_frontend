@@ -31,12 +31,12 @@ class BackendRepository {
         'password': InternalRepositoryUser.instance.password,
       };
 
-  static Future<Response> registerUser(User user) async {
+  static Future<Response> registerUser(User user, String userPassword) async {
     Response response;
     try {
       final json = jsonEncode(user.toJson());
       final backendResponse = await http.post("$BACKEND_URL/blog/user/create",
-          headers: _headers(), body: json);
+          headers: {'password': userPassword}, body: json);
       final decodedResponse = jsonDecode(backendResponse.body);
       response = Response.fromJson(decodedResponse);
     } catch (e) {
@@ -162,7 +162,7 @@ class BackendRepository {
     Response response;
     try {
       final jsonPost = jsonEncode(post.toJson());
-      final request = await http.post('$BACKEND_URL/blog/create_post',
+      final request = await http.post('$BACKEND_URL/blog/user/create_post',
           headers: _headers(), body: jsonPost);
       response = Response.fromJson(jsonDecode(request.body));
     } catch (e) {

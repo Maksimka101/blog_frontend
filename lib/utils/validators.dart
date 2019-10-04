@@ -60,3 +60,21 @@ bool containsNum(String str) {
     if (str.contains(i.toString())) return true;
   return false;
 }
+
+class CreatePostValidator {
+  String title;
+  String content;
+
+  String titleValidator(String title) {
+    if (title.length > 90) return 'Длинна должна быть не больше 90 символов';
+    this.title = title;
+    return null;
+  }
+
+  /// пока я не знаю, что валидировать.
+  String contentValidator(String content) {
+    this.content = content;
+    return null;
+  }
+
+}

@@ -70,21 +70,30 @@ class _OffsetBottomNavigationBarState extends State<OffsetBottomNavigationBar> {
 }
 
 class OffsetBottomBar extends StatelessWidget {
-  OffsetBottomBar({this.offset = const Offset(45, 0), this.backgroundColor});
+  OffsetBottomBar(
+      {this.offset = const Offset(45, 0),
+      this.backgroundColor,
+      List<Widget> child})
+      : this.child = child ?? <Widget>[];
 
   final Offset offset;
   final Color backgroundColor;
+  final List<Widget> child;
 
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
       child: Container(
-        height: kBottomNavigationBarHeight,
-        decoration: BoxDecoration(
-          color: backgroundColor??AppBarTheme.of(context).color,
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(9))
-        ),
-      ),
+          height: kBottomNavigationBarHeight,
+          decoration: BoxDecoration(
+              color: backgroundColor ?? AppBarTheme.of(context).color,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(9))),
+          child: Transform.translate(
+            offset: Offset(-offset.dx, offset.dy),
+            child: Row(mainAxisSize: MainAxisSize.min, children: child
+//                ..insert(0, SizedBox(width: offset.dx,))
+                ),
+          )),
       offset: offset,
     );
   }

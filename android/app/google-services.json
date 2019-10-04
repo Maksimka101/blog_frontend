@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "972075594671",
+    "firebase_url": "https://vlog-backend.firebaseio.com",
+    "project_id": "vlog-backend",
+    "storage_bucket": "vlog-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972075594671:android:8adbb2a7b72b3b61f2b55a",
+        "android_client_info": {
+          "package_name": "com.example.blog_frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972075594671-egsht1agt994rhvv78h5o54rgj2c7e1p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.blog_frontend",
+            "certificate_hash": "bf19a0fc4889ff68b3a0ea25de8068c2fde4cfe8"
+          }
+        },
+        {
+          "client_id": "972075594671-omk9e6sr4024e85pnsgaj27tsfm105vn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2YF3golEIEmB2wIBZSAImnuD8MO2XA24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972075594671-omk9e6sr4024e85pnsgaj27tsfm105vn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

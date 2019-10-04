@@ -31,9 +31,12 @@ class _NewsToolCardState extends State<NewsToolCard>
   }
 
   void _listenForPage(double position) {
+//    print('card id: ${widget.index}');
+//    print('out of set state: $position, is Disposed: $_isDisposed');
     final abs = (widget.index - position).abs();
     if (abs <= 1.3 && !_isDisposed && abs >= 0.5)
       setState(() {
+//        print('in set state: $position');
         _sizeFactor = 0.5 + (1 - abs);
       });
   }
@@ -53,6 +56,7 @@ class _NewsToolCardState extends State<NewsToolCard>
 
   @override
   void dispose() {
+    print('dispose');
     _isDisposed = true;
     super.dispose();
   }

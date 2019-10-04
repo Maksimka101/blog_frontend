@@ -1,5 +1,6 @@
 import 'package:blog_frontend/bloc/loginBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
+import 'package:blog_frontend/ui/widgets/common/errorAlertDialog.dart';
 import 'package:blog_frontend/utils/validators.dart';
 import 'package:flutter/material.dart';
 
@@ -13,24 +14,10 @@ class AuthorizationScreen extends StatelessWidget {
   void _listenEvent(UiEventLogin event, BuildContext context) {
     switch (event.runtimeType) {
       case UiEventAuthenticateError:
-        _showAlert((event as UiEventAuthenticateError).errorMessage, context);
+        showAlertDialog(context, (event as UiEventAuthenticateError).errorMessage);
         break;
     }
   }
-
-  void _showAlert(String message, BuildContext context) => showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) => AlertDialog(
-            title: Text('Что то пошло не так'),
-            content: Text(message),
-            actions: <Widget>[
-              MaterialButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Ok'),
-              )
-            ],
-          ));
 
   @override
   Widget build(BuildContext context) {

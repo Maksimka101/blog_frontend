@@ -1,5 +1,6 @@
 import 'package:blog_frontend/bloc/loginBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
+import 'package:blog_frontend/ui/widgets/common/errorAlertDialog.dart';
 import 'package:blog_frontend/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,24 +24,10 @@ class _LoginScreenState extends State<LoginScreen> {
   void _listenEvent(UiEventLogin event, BuildContext context) {
     switch (event.runtimeType) {
       case UiEventLoginError:
-        _showAlert((event as UiEventLoginError).errorMessage, context);
+        showAlertDialog(context, (event as UiEventLoginError).errorMessage);
         break;
     }
   }
-
-  void _showAlert(String message, BuildContext context) => showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) => AlertDialog(
-            title: Text('Что то пошло не так'),
-            content: Text(message),
-            actions: <Widget>[
-              MaterialButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Ok'),
-              )
-            ],
-          ));
 
   void _pickImage() async {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);

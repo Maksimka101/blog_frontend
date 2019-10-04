@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+/// You can give an image url or image file.
 class CommonNewsCard extends StatelessWidget {
   CommonNewsCard({
     this.title,
@@ -9,9 +12,11 @@ class CommonNewsCard extends StatelessWidget {
     this.imageUrl,
     this.commentsCount,
     this.isExpanded,
+    this.image,
   });
 
   final bool isExpanded;
+  final File image;
   final String title;
   final String content;
   final String imageUrl;
@@ -20,18 +25,16 @@ class CommonNewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RoundedCard(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 8, bottom: 4, left: 10, right: 10),
-        child: Column(
-          children: <Widget>[
-            _NewsCardTitle(title: title),
-            _NewsCardContentText(text: content, isExpanded: isExpanded),
-            _NewsCardContentImage(imageUrl: imageUrl),
-            SizedBox(height: 4),
+      margin: const EdgeInsets.only(top: 8, bottom: 4, left: 10, right: 10),
+      child: Column(
+        children: <Widget>[
+          _NewsCardTitle(title: title),
+          _NewsCardContentText(text: content, isExpanded: isExpanded),
+          _NewsCardContentImage(imageUrl: imageUrl, image: image),
+          SizedBox(height: 4),
 //              Divider(indent: 13, endIndent: 13, color: Colors.grey, height: 3),
-            _NewsCardComment(comments: commentsCount)
-          ],
-        ),
+          _NewsCardComment(comments: commentsCount)
+        ],
       ),
     );
   }
@@ -42,14 +45,14 @@ class _NewsCardTitle extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return title != null && title.isNotEmpty ? Padding(
       padding: const EdgeInsets.only(top: 4),
       child: Text(
-        title,
-        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 22),
+        title ?? '',
+        style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.w700, fontSize: 22),
         textAlign: TextAlign.center,
       ),
-    );
+    ) : Container();
   }
 }
 
@@ -59,36 +62,53 @@ class _NewsCardContentText extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    final content = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.grey[700],
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
+    Widget content;
+    if (text != null && text.isNotEmpty)
+      content = Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.grey[700],
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+          overflow: TextOverflow.fade,
         ),
-        overflow: TextOverflow.fade,
-      ),
-    );
-    return !isExpanded ? Expanded(
-      child: content,
-    ) : content;
+      );
+    else content = Container();
+    return !isExpanded
+        ? Expanded(
+            child: content,
+          )
+        : content;
   }
 }
 
 class _NewsCardContentImage extends StatelessWidget {
-  _NewsCardContentImage({this.imageUrl});
+  _NewsCardContentImage({this.imageUrl, this.image});
+  final File image;
   final String imageUrl;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(10)),
-      child: CachedNetworkImage(
-        height: MediaQuery.of(context).size.height * 0.3,
-        fit: BoxFit.cover,
-        imageUrl: imageUrl,
-      ),
+      child: imageUrl != null || image != null
+          ? (imageUrl != null
+              ? CachedNetworkImage(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  fit: BoxFit.cover,
+                  imageUrl: imageUrl,
+                )
+              : Image.file(
+                  image,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  fit: BoxFit.cover,
+                ))
+          : SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Placeholder(strokeWidth: 3,),
+            ),
     );
   }
 }
