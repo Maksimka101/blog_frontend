@@ -1,5 +1,3 @@
-import 'package:blog_frontend/model/comment.dart';
-import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/ui/entity/uiPostEntity.dart';
 import 'package:blog_frontend/ui/widgets/common/animatedNewsCard.dart';
 import 'package:flutter/material.dart';
