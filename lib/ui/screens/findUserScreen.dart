@@ -66,6 +66,7 @@ class FindUserScreen extends StatelessWidget {
                 else {
                   return Center(
                     child: RoundedCard(
+                      margin: const EdgeInsets.all(8.0),
                       child: Text(
                         'Никого не найдено.',
                         style: TextStyle(fontSize: 20),
@@ -88,6 +89,7 @@ class FindUserScreen extends StatelessWidget {
               } else {
                 return Center(
                   child: RoundedCard(
+                      margin: const EdgeInsets.all(8.0),
                       child: Text(
                     'Uncknown error',
                     style: TextStyle(fontSize: 20),
@@ -100,14 +102,13 @@ class FindUserScreen extends StatelessWidget {
                 child: FractionallySizedBox(
                   widthFactor: 0.7,
                   child: RoundedCard(
-                      child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Начните вводить ник и вы сразу увидите людей с похожими именами. (После 3-х символов)',
+                      'Начните вводить ник и вы сразу увидите людей с похожими именами.\n(После ввода третьего символа)',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
-                  )),
+                  )
                 ),
               );
             }

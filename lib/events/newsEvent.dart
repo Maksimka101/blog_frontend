@@ -2,7 +2,7 @@ import 'package:blog_frontend/model/user.dart';
 import 'package:blog_frontend/ui/entity/uiUserEntity.dart';
 import 'package:flutter/material.dart';
 
-class PostEvent {}
+abstract class PostEvent {}
 
 class EventLoadPosts extends PostEvent {
   EventLoadPosts({this.userName});
@@ -23,8 +23,10 @@ class EventCreateComment extends PostEvent {
 
 class EventCommentPost extends PostEvent {}
 
+class EventGoToSearchScreen extends PostEvent {}
 
-class UiDataPostEvent {}
+
+abstract class UiDataPostEvent {}
 
 class UiEventSmallUsersAndPosts extends UiDataPostEvent {
   UiEventSmallUsersAndPosts({@required this.posts, @required this.users});
@@ -33,7 +35,7 @@ class UiEventSmallUsersAndPosts extends UiDataPostEvent {
 }
 
 
-class UiPostEvent {}
+abstract class UiPostEvent {}
 
 class UiEventError extends UiPostEvent {
   UiEventError({this.message});

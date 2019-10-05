@@ -51,6 +51,11 @@ class CreatePostBloc extends BlocBase {
     if (await _isNotConnected()) return;
     _uiPostEvents.add(UiEventLoading());
     String imageUrl;
+    if (event.imageUrl == null && event.image == null) {
+      _uiErrorEvents.add(EventErrorCreatePost('У поста обязательно должна '
+          'быть фотография'));
+      return;
+    }
     if (event.imageUrl == null)
       imageUrl = await FirebaseRepository.saveImage(event.image);
     else

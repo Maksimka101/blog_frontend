@@ -23,7 +23,13 @@ class _MainAppScreenState extends State<MainAppScreen>
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(
         () => _mainAppScreenBloc.addPage.add(_tabController.index));
+    _mainAppScreenBloc.page.listen(_listenForPage);
     super.initState();
+  }
+
+  void _listenForPage(int page) {
+    if (page < _tabController.length)
+      _tabController.animateTo(page);
   }
 
   @override

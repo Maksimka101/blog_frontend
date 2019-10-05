@@ -11,6 +11,7 @@ import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
 import 'package:blog_frontend/ui/widgets/userPostsScreen/userPostsScreenPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class UserPostsScreen extends StatefulWidget {
   @override
@@ -37,6 +38,7 @@ class _UserPostsScreenState extends State<UserPostsScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return StreamBuilder<UserPostsBlocUiEvent>(
       stream: _userPostsBloc.uiEvents,
       builder: (context, postsData) {
@@ -44,22 +46,34 @@ class _UserPostsScreenState extends State<UserPostsScreen>
           if (postsData.data.runtimeType == UiEventPosts) {
             final users = (postsData.data as UiEventPosts).users;
             if (users.isNotEmpty)
-              return SingleChildScrollView(
-                  child: SizedBox(
-                height:
-                    MediaQuery.of(context).size.height - toolAndAppBarHeight,
-                child: PageView.builder(
-                  itemCount: users.length,
-                  controller: _pageController,
-                  itemBuilder: (context, id) {
-                    return UserPostsScreenPage(
-                      index: id,
-                      post: users[id].post,
-                      userPostsBloc: _userPostsBloc,
-                    );
+              return LiquidPullToRefresh(
+                  onRefresh: () async {
+                    _userPostsBloc.events.add(EventLoadPosts());
                   },
-                ),
-              ));
+                  color: Theme.of(context).primaryColor,
+                  backgroundColor: Colors.white,
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  showChildOpacityTransition: false,
+                  springAnimationDurationInMilliseconds: 400,
+                  child: ListView(
+                    children: <Widget>[
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height -
+                            toolAndAppBarHeight,
+                        child: PageView.builder(
+                          itemCount: users.length,
+                          controller: _pageController,
+                          itemBuilder: (context, id) {
+                            return UserPostsScreenPage(
+                              index: id,
+                              post: users[id].post,
+                              userPostsBloc: _userPostsBloc,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ));
             else
               return Center(
                 child: RoundedCard(

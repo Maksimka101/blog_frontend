@@ -15,7 +15,6 @@ import 'mainAppScreenBloc.dart';
 
 class NewsFeedBloc extends BlocBase {
   NewsFeedBloc() {
-    BlocProvider.getBloc<MainAppScreenBloc>().page.listen(_listenForPages);
     _postEvents.stream.listen(_listenPostEvent);
   }
 
@@ -30,18 +29,19 @@ class NewsFeedBloc extends BlocBase {
       case EventCreateComment:
         _createComment(event as EventCreateComment);
         break;
+      case EventGoToSearchScreen:
+        _goToSearchScreen();
     }
-  }
-
-  void _listenForPages(int pageIndex) {
-    if (pageIndex == 0)
-      _loadUserSubscriptions(EventLoadPosts(userName: _userName));
   }
 
   void _filterUsers(EventFilterUsers event) {
     if (event.showAllUsers)
       _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
-          users: _previousPosts.map((user) => user.user).toList(),
+          users: _previousPosts.fold<List<User>>(<User>[],
+                  (users, user) {
+                if (user.posts.isNotEmpty) users.add(user.user);
+                return users;
+              }),
           posts: RepositoryUserEntity.convertForUiAndSort(_previousPosts)));
     else {
       _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
@@ -62,8 +62,11 @@ class NewsFeedBloc extends BlocBase {
         .then((usersResponse) {
       if (usersResponse.status == Status.Ok) {
         _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
-            users:
-                usersResponse.typedBody.list.map((user) => user.user).toList(),
+            users: usersResponse.typedBody.list.fold<List<User>>(<User>[],
+                (users, user) {
+              if (user.posts.isNotEmpty) users.add(user.user);
+              return users;
+            }),
             posts: RepositoryUserEntity.convertForUiAndSort(
                 usersResponse.typedBody.list)));
         _previousPosts = usersResponse.typedBody.list;
@@ -87,6 +90,10 @@ class NewsFeedBloc extends BlocBase {
         _loadUserSubscriptions(EventLoadPosts(userName: _userName));
       }
     });
+  }
+
+  void _goToSearchScreen() {
+    BlocProvider.getBloc<MainAppScreenBloc>().addPage.add(2);
   }
 
   Future<bool> _isNotConnected() async {

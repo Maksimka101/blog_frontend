@@ -9,6 +9,7 @@ import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
 import 'package:blog_frontend/ui/widgets/newsScreen/newsScreenPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class NewsFeedScreen extends StatefulWidget {
   @override
@@ -44,6 +45,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return StreamBuilder<UiDataPostEvent>(
       stream: _feedBloc.uiDataPostEvent,
       builder: (context, postsSnapshot) {
@@ -52,9 +54,17 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
               (postsSnapshot.data as UiEventSmallUsersAndPosts).posts;
           final users = (postsSnapshot.data as UiEventSmallUsersAndPosts).users;
           if (usersAndPosts.isNotEmpty)
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+            return LiquidPullToRefresh(
+              onRefresh: () async {
+                _feedBloc.addPostEvent.add(EventLoadPosts(
+                    userName: InternalRepositoryUser.instance.name));
+              },
+              color: Theme.of(context).primaryColor,
+              backgroundColor: Colors.white,
+              height: MediaQuery.of(context).size.height * 0.04,
+              showChildOpacityTransition: false,
+              springAnimationDurationInMilliseconds: 400,
+              child: ListView(
                 children: <Widget>[
                   SizedBox(
                     height: MediaQuery.of(context).size.height -
@@ -80,12 +90,22 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
               child: RoundedCard(
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 margin: EdgeInsets.all(8),
-                child: Text(
-                  'Вы ни на кого не подписаны. Для того, чтобы '
-                  'исправить эту ситуацию перейдите на экран поиска.\n'
-                  '(Он третий по счету)',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'Вы ни на кого не подписаны. Для того, чтобы '
+                      'исправить эту ситуацию перейдите на экран поиска.',
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+                    RaisedButton(
+                      child: Text('Перейти к поиску', style: TextStyle(color: Colors.white),),
+                      onPressed: () {
+                        _feedBloc.addPostEvent.add(EventGoToSearchScreen());
+                      },
+                    )
+                  ],
                 ),
               ),
             );

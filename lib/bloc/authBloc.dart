@@ -105,6 +105,7 @@ class AuthBloc extends BlocBase {
       _uiEventsStream.add(UiEventLoginError('Нет подключения к интернету.'));
       return;
     }
+    _uiEventsStream.add(UiEventLoading());
     final imageUrl =
         await FirebaseRepository.saveImage(registerEvent.userAvatar);
     final user = User(name: registerEvent.userName, imageUrl: imageUrl);

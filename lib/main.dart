@@ -7,7 +7,6 @@ import 'package:blog_frontend/bloc/startAppBloc.dart';
 import 'package:blog_frontend/bloc/userPostsBloc.dart';
 import 'package:blog_frontend/events/loginEvents.dart';
 import 'package:blog_frontend/repository/internalRepository.dart';
-import 'package:blog_frontend/ui/screens/createPostScreen.dart';
 import 'package:blog_frontend/ui/screens/errorScreen.dart';
 import 'bloc/authBloc.dart';
 import 'ui/screens/loadScreen.dart';
@@ -85,6 +84,6 @@ class MyApp extends StatelessWidget {
 class TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CreatePostScreen();
+    return SignInScreen();
   }
 }
