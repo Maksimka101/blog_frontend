@@ -25,9 +25,17 @@ class FindUserScreen extends StatelessWidget {
               padding: const EdgeInsets.only(left: 7),
               child: TextField(
                 onChanged: _listenForInput,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .title,
                 decoration: InputDecoration(
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
+                  hintStyle: Theme
+                      .of(context)
+                      .textTheme
+                      .title,
                   hintText: 'Введите ник пользователя',
                 ),
               ),
@@ -69,7 +77,10 @@ class FindUserScreen extends StatelessWidget {
                       margin: const EdgeInsets.all(8.0),
                       child: Text(
                         'Никого не найдено.',
-                        style: TextStyle(fontSize: 20),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .body1,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -92,7 +103,10 @@ class FindUserScreen extends StatelessWidget {
                       margin: const EdgeInsets.all(8.0),
                       child: Text(
                     'Uncknown error',
-                    style: TextStyle(fontSize: 20),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .body1,
                     textAlign: TextAlign.center,
                   )),
                 );
@@ -105,7 +119,10 @@ class FindUserScreen extends StatelessWidget {
                     margin: const EdgeInsets.all(8.0),
                     child: Text(
                       'Начните вводить ник и вы сразу увидите людей с похожими именами.\n(После ввода третьего символа)',
-                      style: TextStyle(fontSize: 20),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body1,
                       textAlign: TextAlign.center,
                     ),
                   )

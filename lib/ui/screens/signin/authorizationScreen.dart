@@ -35,10 +35,10 @@ class AuthorizationScreen extends StatelessWidget {
                   radius: 75,
                   child: Text(
                     'App logo',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w700),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body2,
                   ),
                 ),
               ),
@@ -46,14 +46,32 @@ class AuthorizationScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: TextFormField(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body1,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blueGrey,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(9))),
-                    hintText: "Введите ваше имя",
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .accentColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .buttonColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      hintText: "Введите ваше имя",
+                      hintStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .body1
                   ),
                   validator: _authScreenValidator.nameValidator,
                 ),
@@ -62,14 +80,32 @@ class AuthorizationScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 child: TextFormField(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body1,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blueGrey,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(9))),
-                    hintText: "Введите ваш пароль",
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .accentColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .buttonColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      hintText: "Введите ваш пароль",
+                      hintStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .body1
                   ),
                   validator: _authScreenValidator.passwordValidator,
                 ),

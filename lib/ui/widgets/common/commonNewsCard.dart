@@ -45,14 +45,19 @@ class _NewsCardTitle extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
-    return title != null && title.isNotEmpty ? Padding(
+    return title != null && title.isNotEmpty
+        ? Padding(
       padding: const EdgeInsets.only(top: 4),
       child: Text(
         title ?? '',
-        style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.w700, fontSize: 22),
+        style: Theme
+            .of(context)
+            .textTheme
+            .title,
         textAlign: TextAlign.center,
       ),
-    ) : Container();
+    )
+        : Container();
   }
 }
 
@@ -68,15 +73,15 @@ class _NewsCardContentText extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Text(
           text,
-          style: TextStyle(
-            color: Colors.grey[700],
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme
+              .of(context)
+              .textTheme
+              .body1,
           overflow: TextOverflow.fade,
         ),
       );
-    else content = Container();
+    else
+      content = Container();
     return !isExpanded
         ? Expanded(
             child: content,
@@ -107,7 +112,10 @@ class _NewsCardContentImage extends StatelessWidget {
                 ))
           : SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
-              child: Placeholder(strokeWidth: 3,),
+        child: Placeholder(
+          color: Colors.blueGrey,
+          strokeWidth: 3,
+        ),
             ),
     );
   }
@@ -124,18 +132,23 @@ class _NewsCardComment extends StatelessWidget {
       children: <Widget>[
         Icon(
           Icons.mode_comment,
-          color: textColor,
           size: 19,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
           child: Text(
             comments.toString(),
-            style: TextStyle(fontSize: 18, color: textColor),
+            style: Theme
+                .of(context)
+                .textTheme
+                .body1,
           ),
         ),
         Text(comments == 0 ? 'комментариев' : 'комментария',
-            style: TextStyle(fontSize: 20, color: textColor))
+            style: Theme
+                .of(context)
+                .textTheme
+                .body1)
       ],
     );
   }

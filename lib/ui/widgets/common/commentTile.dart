@@ -41,14 +41,19 @@ class CommentTile extends StatelessWidget {
                   Text(
                     startToUpper(authorName),
                     style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey[700]),
+                        color: Theme
+                            .of(context)
+                            .primaryColor,
+                        fontWeight: FontWeight.w500
+                    ),
                   ),
                   SizedBox(height: 5),
                   Text(
                     content,
-                    style: TextStyle(fontWeight: FontWeight.w500,),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body1,
                   ),
                 ],
               ),

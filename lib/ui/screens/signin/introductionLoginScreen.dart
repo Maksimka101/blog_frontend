@@ -29,7 +29,10 @@ class IntroductionLoginScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     child: Text(
                       "Зарегистрироваться",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .title,
                     ),
                     onPressed: () {
                       loginBloc.addUiEvents.add(UiEventRegister());
@@ -46,7 +49,10 @@ class IntroductionLoginScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     child: Text(
                       "Авторизоваться",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .title,
                     ),
                     onPressed: () {
                       loginBloc.addUiEvents.add(UiEventAuthenticate());

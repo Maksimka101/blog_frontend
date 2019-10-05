@@ -96,11 +96,17 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                     Text(
                       'Вы ни на кого не подписаны. Для того, чтобы '
                       'исправить эту ситуацию перейдите на экран поиска.',
-                      style: TextStyle(fontSize: 20),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body1,
                       textAlign: TextAlign.center,
                     ),
                     RaisedButton(
-                      child: Text('Перейти к поиску', style: TextStyle(color: Colors.white),),
+                      child: Text('Перейти к поиску', style: Theme
+                          .of(context)
+                          .textTheme
+                          .body1,),
                       onPressed: () {
                         _feedBloc.addPostEvent.add(EventGoToSearchScreen());
                       },

@@ -69,10 +69,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? Text(
                           "Нажмите, чтобы выбрать фото",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w700),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body2,
                         )
                       : null,
                 ),
@@ -82,14 +82,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: TextFormField(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body1,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blueGrey,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(9))),
-                    hintText: "Введите ваше имя",
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .accentColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .buttonColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      hintText: "Введите ваше имя",
+                      hintStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .body1
                   ),
                   validator: _loginScreenValidator.nameValidator,
                 ),
@@ -98,14 +116,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 child: TextFormField(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body1,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blueGrey,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(9))),
-                    hintText: "Введите ваш пароль",
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .accentColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .buttonColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      hintText: "Введите ваш пароль",
+                      hintStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .body1
                   ),
                   validator: _loginScreenValidator.firstPasswordValidator,
                 ),
@@ -113,14 +149,32 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextFormField(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body1,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blueGrey,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(9))),
-                    hintText: "Подтвердите пароль",
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .accentColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme
+                                .of(context)
+                                .buttonColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      hintText: "Подтвердите пароль",
+                      hintStyle: Theme
+                          .of(context)
+                          .textTheme
+                          .body1
                   ),
                   validator: _loginScreenValidator.secondPasswordValidator,
                 ),

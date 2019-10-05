@@ -6,7 +6,7 @@ class RoundedCard extends StatelessWidget {
     this.radius = 10,
     this.padding = const EdgeInsets.all(0),
     this.margin = const EdgeInsets.all(0),
-    this.color = const Color(0xFFF6F6F6),
+    this.color,
   });
   final EdgeInsets padding;
   final EdgeInsets margin;

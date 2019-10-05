@@ -36,10 +36,18 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                       controller: _textEditController,
                       minLines: 1,
                       maxLines: 3,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body1,
                       textCapitalization: TextCapitalization.sentences,
                       decoration: InputDecoration(
                         focusedBorder: InputBorder.none,
                         hintText: 'Ваш комментарий',
+                        hintStyle: Theme
+                            .of(context)
+                            .textTheme
+                            .body1,
                         enabledBorder: InputBorder.none,
                       ),
                     ),

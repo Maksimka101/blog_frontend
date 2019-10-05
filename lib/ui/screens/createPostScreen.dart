@@ -185,7 +185,10 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   child: TextFormField(
                     validator: widget.validator.titleValidator,
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .title,
                     textCapitalization: TextCapitalization.sentences,
                     maxLines: 3,
                     minLines: 1,
@@ -195,9 +198,12 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                         disabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         errorBorder: InputBorder.none,
-                        hintStyle: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w600),
-                        hintText: 'Название'),
+                        hintStyle: Theme
+                            .of(context)
+                            .textTheme
+                            .title,
+                        hintText: 'Название'
+                    ),
                   ),
                 ),
                 RoundedCard(
@@ -212,28 +218,35 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                         minLines: 15,
                         textCapitalization: TextCapitalization.sentences,
                         maxLines: 25,
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey[800]),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .body1,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             disabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
-                            hintStyle: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w600),
+                            hintStyle: Theme
+                                .of(context)
+                                .textTheme
+                                .body1,
                             hintText: 'Содержание'),
                       ),
                       FlatButton.icon(
                           onPressed: _pickImage,
                           icon: Icon(
                             Icons.add_circle,
-                            color: Colors.grey[600],
+                            color: Theme
+                                .of(context)
+                                .accentColor,
                           ),
                           label: Text(
                             'Добавить фото',
-                            style: TextStyle(color: Colors.grey[700]),
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .subtitle,
                           )),
                     ],
                   ),
@@ -268,7 +281,13 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                   RoundedCard(
                     padding: EdgeInsets.symmetric(horizontal: 25),
                     margin: EdgeInsets.all(8),
-                    child: Text('Не забудьте добавить картинку', style: TextStyle(color: Colors.grey),),
+                    child: Text(
+                      'Не забудьте добавить картинку',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .subtitle,
+                    ),
                   ),
               ],
             ),
@@ -283,7 +302,9 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
               if (eventSnap.data.runtimeType == UiEventShowPreview) {
                 final event = eventSnap.data as UiEventShowPreview;
                 return Container(
-                  color: Colors.white70,
+                  color: Theme
+                      .of(context)
+                      .canvasColor,
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
