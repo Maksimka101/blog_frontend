@@ -263,6 +263,13 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
                       ],
                     ),
                   ),
+                if (widget.eventCreatePost.imageUrl == null &&
+                    widget.eventCreatePost.image == null)
+                  RoundedCard(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    margin: EdgeInsets.all(8),
+                    child: Text('Не забудьте добавить картинку', style: TextStyle(color: Colors.grey),),
+                  ),
               ],
             ),
           ),

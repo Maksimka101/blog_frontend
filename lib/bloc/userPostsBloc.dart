@@ -76,6 +76,8 @@ class UserPostsBloc extends BlocBase {
         _loadUserPosts(EventLoadPosts(userName: _userName));
         _errorUiEvents.sink
             .add(UiEventError(message: 'Не удалось создать комментарий.'));
+      } else {
+        _eventsStream.add(EventLoadPosts(userName: _userName));
       }
     });
   }
@@ -86,6 +88,8 @@ class UserPostsBloc extends BlocBase {
       if (response.status != Status.Ok) {
         _errorUiEvents.sink
             .add(UiEventError(message: 'Не удалось удалить пост.'));
+      } else {
+        _eventsStream.add(EventLoadPosts(userName: _userName));
       }
     });
   }

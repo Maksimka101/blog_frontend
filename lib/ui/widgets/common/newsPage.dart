@@ -41,14 +41,6 @@ class _NewsPageState extends State<NewsPage> {
               onSend: (message) => setState(() {
                     widget.createComment(
                         message, widget.post.id);
-                    // сделано через одно место
-                    widget.post.comments
-                        .add(Comment(
-                      authorId: InternalRepositoryUser.instance.name,
-                      content: message,
-                      postId: widget.index,
-                      authorImageUrl: InternalRepositoryUser.instance.imageUrl,
-                    ));
                   }))
       ],
     );

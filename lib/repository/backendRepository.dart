@@ -84,6 +84,7 @@ class BackendRepository {
       getAllUserSubscription(String userName) async {
     Response<SerializableList<RepositoryUserEntity>> response;
     try {
+      print('User id:');
       final backendResponse = await http
           .get('$BACKEND_URL/blog/user/get_all_subscriptions/$userName');
       final decodedResponse = jsonDecode(backendResponse.body);

@@ -88,6 +88,8 @@ class NewsFeedBloc extends BlocBase {
         _uiPostEvent.sink
             .add(UiEventError(message: 'Не удалось создать пост.'));
         _loadUserSubscriptions(EventLoadPosts(userName: _userName));
+      } else {
+        _postEvents.add(EventLoadPosts(userName: _userName));
       }
     });
   }
