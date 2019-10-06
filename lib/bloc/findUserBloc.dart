@@ -114,7 +114,7 @@ class FindUserBloc extends BlocBase {
 
   void _updatePosts() {
     BlocProvider.getBloc<NewsFeedBloc>().addPostEvent.add(
-        nEvent.EventLoadPosts(userName: InternalRepositoryUser.instance.name));
+        nEvent.EventLoadPosts());
   }
 
   void dispose() {

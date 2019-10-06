@@ -83,8 +83,8 @@ class _UserPostsScreenState extends State<UserPostsScreen>
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          'Вы ещё не написали ни одного поста. '
-                          'Напишите же его.',
+                          'Вы ещё не написали ни одного поста.\n'
+                              'Сделайте же это.',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center,

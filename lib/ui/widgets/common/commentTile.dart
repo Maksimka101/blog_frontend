@@ -27,10 +27,10 @@ class CommentTile extends StatelessWidget {
                   backgroundColor: Colors.deepPurple,
                   child: Text(
                     authorName.length > 0 ? authorName[0].toUpperCase() : '',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .title,
                   )),
             SizedBox(width: 10),
             Flexible(
@@ -43,7 +43,7 @@ class CommentTile extends StatelessWidget {
                     style: TextStyle(
                         color: Theme
                             .of(context)
-                            .primaryColor,
+                            .primaryColorLight,
                         fontWeight: FontWeight.w500
                     ),
                   ),

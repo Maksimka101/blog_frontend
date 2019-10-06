@@ -94,6 +94,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             padding: const EdgeInsets.only(right: 15),
             child: GestureDetector(
               onTapDown: (details) {
+                _formController.currentState.validate();
                 _eventCreatePost.content = _validator.content;
                 _eventCreatePost.title = _validator.title;
                 _bloc.events
@@ -176,7 +177,7 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
       children: <Widget>[
         SingleChildScrollView(
           child: Form(
-            onChanged: () => widget.formController.currentState.validate(),
+            autovalidate: true,
             key: widget.formController,
             child: Column(
               children: <Widget>[
@@ -301,28 +302,11 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
             else {
               if (eventSnap.data.runtimeType == UiEventShowPreview) {
                 final event = eventSnap.data as UiEventShowPreview;
-                return Container(
-                  color: Theme
-                      .of(context)
-                      .canvasColor,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.8 -
-                            kBottomNavigationBarHeight,
-                        child: CommonNewsCard(
-                          title: event.title,
-                          isExpanded: false,
-                          content: event.content,
-                          commentsCount: 0,
-                          imageUrl: event.imageUrl,
-                          image: event.image,
-                        ),
-                      ),
-                    ),
-                  ),
+                return _NewsCardPreview(
+                  imageUrl: event.imageUrl,
+                  image: event.image,
+                  content: event.content,
+                  title: event.title,
                 );
               } else
                 return Container();
@@ -330,6 +314,45 @@ class _CreatePostBodyState extends State<_CreatePostBody> {
           },
         )
       ],
+    );
+  }
+}
+
+class _NewsCardPreview extends StatelessWidget {
+  _NewsCardPreview({this.title, this.imageUrl, this.image, this.content});
+
+  final String title;
+  final String content;
+  final String imageUrl;
+  final File image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme
+          .of(context)
+          .canvasColor,
+      child: Align(
+        alignment: Alignment.center,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: SizedBox(
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.76 -
+                kBottomNavigationBarHeight,
+            child: CommonNewsCard(
+              title: title,
+              isExpanded: false,
+              content: content,
+              commentsCount: 0,
+              imageUrl: imageUrl,
+              image: image,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -58,7 +58,7 @@ class NewsFeedBloc extends BlocBase {
 
   void _loadUserSubscriptions(EventLoadPosts event) async {
     if (await _isNotConnected()) return;
-    BackendRepository.getAllUserSubscription(event.userName)
+    BackendRepository.getAllUserSubscription(_userName)
         .then((usersResponse) {
       if (usersResponse.status == Status.Ok) {
         _uiDataPostEvent.add(UiEventSmallUsersAndPosts(
@@ -87,9 +87,9 @@ class NewsFeedBloc extends BlocBase {
       if (response.status != Status.Ok) {
         _uiPostEvent.sink
             .add(UiEventError(message: 'Не удалось создать пост.'));
-        _loadUserSubscriptions(EventLoadPosts(userName: _userName));
+        _loadUserSubscriptions(EventLoadPosts());
       } else {
-        _postEvents.add(EventLoadPosts(userName: _userName));
+        _postEvents.add(EventLoadPosts());
       }
     });
   }

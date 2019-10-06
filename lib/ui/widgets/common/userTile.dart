@@ -23,13 +23,12 @@ class UserTile extends StatelessWidget {
                   backgroundImage: CachedNetworkImageProvider(imageUrl)),
             if (imageUrl == null)
               CircleAvatar(
-                  backgroundColor: Colors.deepPurple,
                   child: Text(
                     userName.length > 0 ? userName[0].toUpperCase() : '',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .title,
                   )),
             SizedBox(width: 20),
             Flexible(

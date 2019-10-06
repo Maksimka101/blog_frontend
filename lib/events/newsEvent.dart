@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 
 abstract class PostEvent {}
 
-class EventLoadPosts extends PostEvent {
-  EventLoadPosts({this.userName});
-  final String userName;
-}
+class EventLoadPosts extends PostEvent {}
 
 class EventFilterUsers extends PostEvent {
   EventFilterUsers({@required this.showAllUsers, this.userName});

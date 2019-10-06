@@ -2,7 +2,6 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:blog_frontend/bloc/newsFeedBloc.dart';
 import 'package:blog_frontend/events/newsEvent.dart';
 import 'package:blog_frontend/model/contants.dart';
-import 'package:blog_frontend/repository/entity/repositoryClient.dart';
 import 'package:blog_frontend/ui/widgets/common/errorAlertDialog.dart';
 import 'package:blog_frontend/ui/widgets/common/loadingWidget.dart';
 import 'package:blog_frontend/ui/widgets/common/roundedCard.dart';
@@ -39,7 +38,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
     _feedBloc.uiPostEvent.listen(_listenForError);
     _pageViewController.addListener(_listenPageViewController);
     _feedBloc.addPostEvent
-        .add(EventLoadPosts(userName: InternalRepositoryUser.instance.name));
+        .add(EventLoadPosts());
     super.initState();
   }
 
@@ -56,8 +55,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
           if (usersAndPosts.isNotEmpty)
             return LiquidPullToRefresh(
               onRefresh: () async {
-                _feedBloc.addPostEvent.add(EventLoadPosts(
-                    userName: InternalRepositoryUser.instance.name));
+                _feedBloc.addPostEvent.add(EventLoadPosts());
               },
               color: Theme.of(context).primaryColor,
               backgroundColor: Colors.white,
